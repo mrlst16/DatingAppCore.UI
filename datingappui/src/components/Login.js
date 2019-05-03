@@ -18,6 +18,7 @@ export class Login extends Component {
         }
         return (
             <div>
+            <h3>Dude its a login</h3>
             <FacebookLogin
             appId="209105475917952"
             autoLoad={true}
