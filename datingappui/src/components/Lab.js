@@ -12,10 +12,15 @@ export class Lab extends Component {
     render() {
         var config = new Configuration();
         var sdk = new Sdk(config);
-        sdk.GetUser();
+        var user = sdk.GetUser();
+
+        console.log(window.fbAsyncInit);
+        window.fbAsyncInit();
+        console.log(window.FB);
         return(
             <div>
                 <h1>This is the Lab Page</h1>
+                
             </div>
         );
     };

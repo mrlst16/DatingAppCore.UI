@@ -17,21 +17,21 @@ export class Login extends Component {
             );
         }
         return (
-            <div>
-            <h3>Dude its a login</h3>
-            <FacebookLogin
-            appId="209105475917952"
-            autoLoad={true}
-            fields="name,id,picture"
-            callback={(response=>{
-                console.log(response);
-                localStorage.setItem("externalid", response.id.toString());
-                localStorage.setItem("externalname", response.name);
-                localStorage.setItem("imgurl", response.picture.data.url);
-                localStorage.setItem("idtype", "facebook");
-            })}
-            />
-            </div>
+            // <div>
+             <h3>Dude its a login</h3>
+            // <FacebookLogin
+            // appId="209105475917952"
+            // autoLoad={true}
+            // fields="name,id,picture"
+            // callback={(response=>{
+            //     console.log(response);
+            //     localStorage.setItem("externalid", response.id.toString());
+            //     localStorage.setItem("externalname", response.name);
+            //     localStorage.setItem("imgurl", response.picture.data.url);
+            //     localStorage.setItem("idtype", "facebook");
+            // })}
+            // />
+            // </div>
         );
     }
 }
