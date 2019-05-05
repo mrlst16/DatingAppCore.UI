@@ -1,37 +1,41 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import FacebookLogin from 'react-facebook-login';
+import { Button } from 'react-bootstrap';
 
 export class Login extends Component {
     constructor(){
         super();
     }
 
+    logout = ()=>{
+        localStorage.clear();
+    }
+
+    fbLogin = ()=>{
+        console.log("Doing stuff with facebook");
+        window.fbAsyncInit();
+        console.log(window.FB);
+        window.FB.login(function(response) {
+            if (response.authResponse) {
+             console.log('Welcome!  Fetching your information.... ');
+             window.FB.api('/me', function(response) {
+                localStorage.setItem("external_id", response.id);
+                localStorage.setItem("idtype", "facebook");
+             });
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        });
+    }
+
     render() {
-        var user = localStorage.getItem("externalid");
-        if(user){
-            return (
-                <div id="userstamp">
-                    <img src={localStorage.getItem("imgurl")} width="50" height="50"></img>
-                </div>
-            );
-        }
+        var eid = localStorage.getItem("external_id");
+        console.log("external_id = " + eid);
+
         return (
-            // <div>
-             <h3>Dude its a login</h3>
-            // <FacebookLogin
-            // appId="209105475917952"
-            // autoLoad={true}
-            // fields="name,id,picture"
-            // callback={(response=>{
-            //     console.log(response);
-            //     localStorage.setItem("externalid", response.id.toString());
-            //     localStorage.setItem("externalname", response.name);
-            //     localStorage.setItem("imgurl", response.picture.data.url);
-            //     localStorage.setItem("idtype", "facebook");
-            // })}
-            // />
-            // </div>
+            <input type="button" value="Login with facebook" onClick={this.fbLogin} />
+            
         );
     }
 }
