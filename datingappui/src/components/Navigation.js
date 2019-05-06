@@ -1,18 +1,30 @@
 import React, { Component } from 'react'
 import {Navbar, Nav, NavDropdown, Form} from 'react-bootstrap'
 import LoginManager from '../js/LoginManager';
-import Login from '../components/Login'
 
 export class Navigation extends Component {
     constructor(){
         super();
+        this.Login = new LoginManager();
+
+    }
+
+    logout = ()=>{
+        console.log("logging out");
+        this.Login.logout();
+    }
+
+    login = (platform)=>{
+        console.log("Logging in via " + platform);
+        this.Login.logIn(platform);
     }
 
     render() {
-
-        var loggedIn = false;
+        var login = new LoginManager();
+        var l = login.IsLoggedIn();
+        console.log(l);
         let filler;
-        if(!loggedIn){
+        if(l){
             filler = 
             <Nav className="mr-auto">
                 <Nav.Link href="/search">Search</Nav.Link>
@@ -24,13 +36,16 @@ export class Navigation extends Component {
                     <NavDropdown.Divider></NavDropdown.Divider>
                     <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
                 </NavDropdown>
-                <Login></Login>
+                <Nav.Link href="#" onClick={this.logout}>Log Out</Nav.Link>
+                
                 <Nav.Link href="/lab">Lab</Nav.Link>
             </Nav>
         } else {
             filler = 
             <Nav>
-                <Nav.Link href="/login">Log In</Nav.Link>
+                <NavDropdown title="Login" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#" onClick={()=>{this.login("facebook")}}>Facebook</NavDropdown.Item>
+                </NavDropdown>
             </Nav>
         }
 
