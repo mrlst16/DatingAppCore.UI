@@ -10,6 +10,7 @@ import Search from './components/Search';
 import Reviews from './components/Reviews';
 import Messaging from './components/Messaging';
 import Settings from './components/Settings';
+import Account from './components/Account';
 
 class App extends Component {
 
@@ -25,6 +26,7 @@ class App extends Component {
             <Route path="/reviews" component={Reviews} />
             <Route path="/messaging" component={Messaging} />
             <Route path="/settings" component={Settings} />
+            <Route path="/account" component={Account} />
             <Route path="/lab" component={Lab} />
           </div>
         </Router>

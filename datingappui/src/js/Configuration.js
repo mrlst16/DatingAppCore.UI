@@ -1,4 +1,4 @@
-export function Configuration(){
+export default function Configuration(){
     var devmode = true;
     this.DevMode = devmode;
     this.ApiBaseUrl =  (function(){

@@ -10,15 +10,13 @@ export class Lab extends Component {
     }
 
     render() {
-        // var config = new Configuration();
-        // var sdk = new Sdk(config);
-        // var user = sdk.GetUser();
-
+        
+        
         return(
             <div>
                 
                 <h1>This is the Lab Page</h1>
-                <Login></Login>
+                {/* <Login></Login> */}
             </div>
         );
     };

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import {Navbar, Nav, NavDropdown, Form} from 'react-bootstrap'
+import LoginManager from '../js/LoginManager';
+import Login from '../components/Login'
 
 export class Navigation extends Component {
     constructor(){
@@ -7,10 +9,10 @@ export class Navigation extends Component {
     }
 
     render() {
-        var loggedIn = true;
+
+        var loggedIn = false;
         let filler;
-        
-        if(loggedIn){
+        if(!loggedIn){
             filler = 
             <Nav className="mr-auto">
                 <Nav.Link href="/search">Search</Nav.Link>
@@ -19,7 +21,10 @@ export class Navigation extends Component {
                 <NavDropdown title="Account" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/profile_editor">Profile Editor</NavDropdown.Item>
                     <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
+                    <NavDropdown.Divider></NavDropdown.Divider>
+                    <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
                 </NavDropdown>
+                <Login></Login>
                 <Nav.Link href="/lab">Lab</Nav.Link>
             </Nav>
         } else {

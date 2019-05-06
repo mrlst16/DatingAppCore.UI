@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-export function Sdk(config){
+export default function Sdk(config){
 
     console.log(config);
     var config = config;
