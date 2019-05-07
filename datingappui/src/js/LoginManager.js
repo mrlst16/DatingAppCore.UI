@@ -3,10 +3,10 @@ import Configuration from '../js/Configuration'
 
 export default function LoginManager(){
 
-    var skd = new Sdk(new Configuration());
 
     this.logout = function(){
         localStorage.clear();
+        window.User = null;
         window.location.reload();
     }
 
@@ -21,17 +21,30 @@ export default function LoginManager(){
     }
 
     this.IsLoggedIn = function(){
-        return localStorage.getItem("external_id") !== null;
+        return localStorage.getItem("user") !== null;
     }
-    
+
+    this.getUser = function(){
+        var userInJson = localStorage.getItem("user");
+        console.log(userInJson);
+        return JSON.parse(localStorage.getItem("user"));
+    }
+
     function fbLogin (){
         window.fbAsyncInit();
         window.FB.login(function(response) {
             if (response.authResponse) {
              window.FB.api('/me', function(response) {
-                localStorage.setItem("external_id", response.id);
-                localStorage.setItem("idtype", "facebook");
-                window.location.reload();
+                try{
+                    var sdk = new Sdk(new Configuration());
+                    localStorage.setItem("external_id", response.id);
+                    localStorage.setItem("idtype", "facebook");
+                    sdk.LoginOrSignupWithFacebook(response.id);
+                } catch(ex){
+                    console.log("An Exception was thrown while logging in via facebook");
+                    console.log(ex);
+                }
+                
              });
             } else {
                 console.log('User cancelled login or did not fully authorize.');

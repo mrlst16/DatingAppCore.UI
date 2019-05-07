@@ -10,21 +10,23 @@ export class Navigation extends Component {
     }
 
     logout = ()=>{
-        console.log("logging out");
         this.Login.logout();
     }
 
     login = (platform)=>{
-        console.log("Logging in via " + platform);
         this.Login.logIn(platform);
     }
 
     render() {
         var login = new LoginManager();
         var l = login.IsLoggedIn();
-        console.log(l);
+        
         let filler;
+        
+        
         if(l){
+            console.log("The user is logged in");
+            console.log(this.Login.getUser());
             filler = 
             <Nav className="mr-auto">
                 <Nav.Link href="/search">Search</Nav.Link>

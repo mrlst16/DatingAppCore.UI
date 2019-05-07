@@ -3,10 +3,9 @@ import axios from 'axios'
 
 export default function Sdk(config){
 
-    console.log(config);
     var config = config;
 
-    function Post(url, data){
+    function Post(url, data, succssCallback){
         axios({
             method: 'post',
             url: url,
@@ -18,15 +17,34 @@ export default function Sdk(config){
                 'Authorization' : 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
             },
         }).then(function (response) {
-            console.log(response);
-            return response;
+            console.log("Successfully posted data to " + url);
+            if(succssCallback !== null && succssCallback !== undefined){
+                succssCallback(response);
+            }
         }).catch(function (error) {
+            console.log("Error posting data to " + url);
             console.log(error);
-            return null;
         });
+        return this;
     }
     
     this.GetUser = function(){
         return Post(config.ApiBaseUrl + "/api/users/get_user", {})
+    }
+
+    function LoginOrSignup(data, successCallback){
+        return Post(config.ApiBaseUrl + "/api/users/login_or_signup", data, successCallback)
+    }
+
+    this.LoginOrSignupWithFacebook = function(userid){
+        return LoginOrSignup({
+            User:{
+                ExternalID: userid,
+                IdType: 1
+            }
+        }, function(response){
+            localStorage.setItem("user", JSON.stringify(response.data.Result.User));
+            window.location.reload();
+        });
     }
 }

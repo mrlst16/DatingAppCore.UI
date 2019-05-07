@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Login from '../components/Login'
+import Login from './Login'
 import { Sdk } from '../js/sdk'
 import { Configuration } from '../js/Configuration';
 
