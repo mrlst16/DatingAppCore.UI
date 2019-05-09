@@ -25,8 +25,6 @@ export default function LoginManager(){
     }
 
     this.getUser = function(){
-        var userInJson = localStorage.getItem("user");
-        console.log(userInJson);
         return JSON.parse(localStorage.getItem("user"));
     }
 

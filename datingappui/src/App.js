@@ -26,12 +26,16 @@ class App extends Component {
     
     if(!this.Login.IsLoggedIn()){
       routing =
-            <div id="body">
+              <div id="body" style={{
+                display: "block"
+              }}>
               <Route path="/" component={PleaseLogin} />
             </div>
     } else {
       routing = 
-            <div id="body">
+            <div id="body" style={{
+                display: "block"
+              }}> 
               <Route path="/please_login" component={PleaseLogin} />
               <Route path="/profile_editor" component={ProfileEditor} />
               <Route path="/search" component={Search} />

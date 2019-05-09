@@ -27,13 +27,27 @@ export default function Sdk(config){
         });
         return this;
     }
-    
-    this.GetUser = function(){
-        return Post(config.ApiBaseUrl + "/api/users/get_user", {})
+
+    this.PostReturnPromise = function(url, data, succssCallback){
+        return axios({
+            method: 'post',
+            url: config.ApiBaseUrl + url,
+            data: data,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'true',
+                'ClientID': config.ClientID,
+                'Authorization' : 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
+            },
+        });
+    }
+
+    this.GetUser = function(data, successCallback){
+        return Post(config.ApiBaseUrl + "/api/users/get_user", data, successCallback);
     }
 
     function LoginOrSignup(data, successCallback){
-        return Post(config.ApiBaseUrl + "/api/users/login_or_signup", data, successCallback)
+        return Post(config.ApiBaseUrl + "/api/users/login_or_signup", data, successCallback);
     }
 
     this.LoginOrSignupWithFacebook = function(userid){
@@ -46,5 +60,16 @@ export default function Sdk(config){
             localStorage.setItem("user", JSON.stringify(response.data.Result.User));
             window.location.reload();
         });
+    }
+
+    this.GetProfile = function(userid, successCallback){
+        return this.GetUser({
+            "IncludeProfile": "true",
+            "UserID" : userid
+        }, successCallback)
+    }
+
+    this.SetProfile = function(userid, profile, successCallback){
+        return Post(config.ApiBaseUrl + "/api/users/set_user_settings", {UserID: userid, Profile: profile}, successCallback);
     }
 }
