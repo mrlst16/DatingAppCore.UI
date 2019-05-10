@@ -10,78 +10,29 @@ export class ProfileEditor extends Component {
         super(props);
         
         this.state = {};
-        // var login = new LoginManager();
-        // var sdk = new Sdk(new Configuration());
-        // var user = login.getUser();
-        // console.log(user);
-        
-        // var self = this;
-        // sdk.PostReturnPromise("/api/users/login_or_signup", {
-        //     "IncludeProfile": "true",
-        //     "UserID" : user.ID
-        // }).then((response=>{
-        //     console.log("response");
-        //     console.log(response);
-        //     self.state = response.data.Result.Profile;
-        //     self.setState(self.state);
-        // })).catch((error)=>{
-        //     console.log(error);
-        // });
         this.TryGetStateFromApi();
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     TryGetStateFromApi(){
-        // var result = {};
-        // try {
-        //     var Login = new LoginManager();
-        //     var sdk = new Sdk(new Configuration());
-        //     var user = Login.getUser();
-            
-        //     sdk.GetProfile(user.ID, function(response){
-        //         result = response.data.Result.Profile;
-        //         console.log("response");
-        //         console.log(response);
-        //         console.log("result so far");
-        //         console.log(result);
-        //         if(result === null || result === "undefined"){
-        //             console.log("This is either null or undefined;");
-        //             result = {};
-        //         }
-        //     });
-        //     console.log("At end of try the result is....");
-        //     console.log(result);
-        // } catch (error) {
-        //     console.log("Error retreiving user profile");
-        //     console.log(error);
-        //     result = {};
-        // }
-
         var login = new LoginManager();
         var sdk = new Sdk(new Configuration());
         var user = login.getUser();
-        console.log(user);
 
         var self = this;
         sdk.PostReturnPromise("/api/users/get_user", {
             "IncludeProfile": "true",
             "UserID" : user.ID
         }).then((response=>{
-            console.log("response");
-            console.log(response);
             if(response.data.Result){
                 self.state = response.data.Result.Profile;
                 self.setState(self.state);
-                console.log("self.state");
-                console.log(self.state);
             }
-            
         })).catch((error)=>{
             console.log("error");
             console.log(error);
         });
-        // return result;
     }
 
     handleChange(event){
@@ -93,15 +44,12 @@ export class ProfileEditor extends Component {
 
     handleSubmit(event){
         event.preventDefault();
-        console.log(this.state);
         try {
             var Login = new LoginManager();
             var sdk = new Sdk(new Configuration());
             var user = Login.getUser();
             
-            console.log("About to try and set profile")
             sdk.SetProfile(user.ID, this.state, function(response){
-                console.log("From handle submit callback");
                 console.log(response);
             });
             
@@ -130,8 +78,8 @@ export class ProfileEditor extends Component {
 
                     <Form.Group controlId="Sex">
                         <Form.Label>Sex &nbsp; </Form.Label>
-                        M <input type="radio" value="m" label="M" name="sex" value="m" onChange={this.handleChange}/>
-                        F <input type="radio" value="f" label="F" name="sex" value="f" onChange={this.handleChange}/>
+                        M <input type="radio" value="m" checked={(this.state.sex && this.state.sex === "m") ? "checked" : ""} label="M" name="sex" value="m" onChange={this.handleChange}/>
+                        F <input type="radio" value="f" checked={(this.state.sex && this.state.sex === "f") ? "checked" : ""} label="F" name="sex" value="f" onChange={this.handleChange}/>
                         <Form.Text className="text-muted">
                             How were you born?
                         </Form.Text>
@@ -139,10 +87,20 @@ export class ProfileEditor extends Component {
 
                     <Form.Group controlId="Gender">
                         <Form.Label>Gender &nbsp; </Form.Label>
-                        M <input type="radio" value="m" label="M" name="gender" value="m" onChange={this.handleChange}/>
-                        F <input type="radio" value="f" label="F" name="gender" value="f" onChange={this.handleChange}/>
+                        M <input type="radio" value="m" checked={(this.state.gender && this.state.gender === "m") ? "checked" : ""} label="M" name="gender" onChange={this.handleChange}/>
+                        F <input type="radio" value="f" checked={(this.state.gender && this.state.gender === "f") ? "checked" : ""} label="F" name="gender" onChange={this.handleChange}/>
                         <Form.Text className="text-muted">
                             How do you want others to identify you?
+                        </Form.Text>
+                    </Form.Group>
+
+                    <Form.Group controlId="Dogs">
+                        <Form.Label>Love Dogs? &nbsp; </Form.Label>
+                        Love Them <input type="radio" value="t" checked={(this.state.dogs && this.state.dogs === "t") ? "checked" : ""} name="dogs" onChange={this.handleChange}/>
+                        Not A Fan <input type="radio" value="f" checked={(this.state.dogs && this.state.dogs === "f") ? "checked" : ""} name="dogs" onChange={this.handleChange}/>
+                        Neutral <input type="radio" value="n" checked={(this.state.dogs && this.state.dogs === "n") ? "checked" : ""} name="dogs" onChange={this.handleChange}/>
+                       <Form.Text className="text-muted">
+                           Do you love dogs?
                         </Form.Text>
                     </Form.Group>
 

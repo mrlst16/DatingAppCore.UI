@@ -72,4 +72,8 @@ export default function Sdk(config){
     this.SetProfile = function(userid, profile, successCallback){
         return Post(config.ApiBaseUrl + "/api/users/set_user_settings", {UserID: userid, Profile: profile}, successCallback);
     }
+
+    this.SetSettings = function(userid, settings, successCallback){
+        return Post(config.ApiBaseUrl + "/api/users/set_user_settings", {UserID: userid, Settings: settings}, successCallback);
+    }
 }
