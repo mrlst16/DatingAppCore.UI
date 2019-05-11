@@ -41,6 +41,8 @@ export class Settings extends Component {
         var state = this.state;
         state[event.target.name] = event.target.value;
         this.setState(state);
+
+        
     }
 
     handleSubmit(event){
@@ -50,6 +52,7 @@ export class Settings extends Component {
             var sdk = new Sdk(new Configuration());
             var user = Login.getUser();
             
+
             console.log("About to try and set profile")
             sdk.SetSettings(user.ID, this.state, function(response){
                 console.log("From handle submit callback");
