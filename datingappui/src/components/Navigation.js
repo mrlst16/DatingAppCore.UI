@@ -35,8 +35,7 @@ export class Navigation extends Component {
                 <NavDropdown title="Account" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/profile_editor">Profile Editor</NavDropdown.Item>
                     <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
-                    <NavDropdown.Divider></NavDropdown.Divider>
-                    <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
+                    <NavDropdown.Item href="/myphotos">My Photos</NavDropdown.Item>
                 </NavDropdown>
                 <Nav.Link href="#" onClick={this.logout}>Log Out</Nav.Link>
                 
