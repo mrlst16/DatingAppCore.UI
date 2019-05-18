@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 
-export default function Sdk(config){
+export default function Sdk(config) {
 
     var config = config;
 
-    function Post(url, data, succssCallback){
+    function Post(url, data, succssCallback) {
         axios({
             method: 'post',
             url: url,
@@ -14,11 +14,11 @@ export default function Sdk(config){
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': 'true',
                 'ClientID': config.ClientID,
-                'Authorization' : 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
+                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
             },
         }).then(function (response) {
             console.log("Successfully posted data to " + url);
-            if(succssCallback !== null && succssCallback !== undefined){
+            if (succssCallback !== null && succssCallback !== undefined) {
                 succssCallback(response);
             }
         }).catch(function (error) {
@@ -28,7 +28,7 @@ export default function Sdk(config){
         return this;
     }
 
-    this.PostReturnPromise = function(url, data, succssCallback){
+    this.PostReturnPromise = function (url, data, succssCallback) {
         return axios({
             method: 'post',
             url: config.ApiBaseUrl + url,
@@ -37,43 +37,54 @@ export default function Sdk(config){
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': 'true',
                 'ClientID': config.ClientID,
-                'Authorization' : 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
+                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
             },
         });
     }
 
-    this.GetUser = function(data, successCallback){
+    this.GetUser = function (data, successCallback) {
         return Post(config.ApiBaseUrl + "/api/users/get_user", data, successCallback);
     }
 
-    function LoginOrSignup(data, successCallback){
+    function LoginOrSignup(data, successCallback) {
         return Post(config.ApiBaseUrl + "/api/users/login_or_signup", data, successCallback);
     }
 
-    this.LoginOrSignupWithFacebook = function(userid){
+    this.LoginOrSignupWithFacebook = function (userid) {
         return LoginOrSignup({
-            User:{
+            User: {
                 ExternalID: userid,
                 IdType: 1
             }
-        }, function(response){
+        }, function (response) {
             localStorage.setItem("user", JSON.stringify(response.data.Result.User));
             window.location.reload();
         });
     }
 
-    this.GetProfile = function(userid, successCallback){
+    this.GetProfile = function (userid, successCallback) {
         return this.GetUser({
             "IncludeProfile": "true",
-            "UserID" : userid
+            "UserID": userid
         }, successCallback)
     }
 
-    this.SetProfile = function(userid, profile, successCallback){
-        return Post(config.ApiBaseUrl + "/api/users/set_user_profile", {UserID: userid, Properties: profile}, successCallback);
+    this.SetProfile = function (userid, profile, successCallback) {
+        return Post(config.ApiBaseUrl + "/api/users/set_user_profile", { UserID: userid, Properties: profile }, successCallback);
     }
 
-    this.SetSettings = function(userid, settings, successCallback){
-        return Post(config.ApiBaseUrl + "/api/users/set_user_settings", {UserID: userid, Properties: settings}, successCallback);
+    this.SetSettings = function (userid, settings, successCallback) {
+        return Post(config.ApiBaseUrl + "/api/users/set_user_settings", { UserID: userid, Properties: settings }, successCallback);
+    }
+
+    this.GetUserPhotos = function (userid, successCallback) {
+        var url = config.ApiBaseUrl + "/api/users/get_user";
+        console.log("url: " + url);
+        return this.PostReturnPromise(
+            url,
+            {
+                "IncludePhotos": "true",
+                "UserID": userid
+            }, successCallback)
     }
 }
