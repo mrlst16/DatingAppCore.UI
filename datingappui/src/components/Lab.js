@@ -26,13 +26,9 @@ export class Lab extends Component {
             "IncludePhotos": "true",
             "UserID": user.ID
         }).then((response) => {
-            if(response.data.Sucess){
+            if (response.data.Sucess) {
                 thisRef.state.images = [];
-                console.log(response.data.Result.Photos);
-                response.data.Result.Photos.forEach(function(item, index){
-                    console.log('item');
-                    console.log(item.ID);
-                    console.log('index: ' + index);
+                response.data.Result.Photos.forEach(function (item, index) {
                     thisRef.state.images.push("https://localhost:44387/api/users/photo?id=" + item.ID);
                 });
                 thisRef.setState(thisRef.state);
@@ -44,7 +40,7 @@ export class Lab extends Component {
             });
     }
 
-    componentDidMount(){
+    componentDidMount() {
         console.log("component mounted");
     }
 
@@ -53,19 +49,9 @@ export class Lab extends Component {
     }
 
     render() {
-
-        
-
         return (
-
             <div>
                 <ImgContainer images={this.state.images} onSortEnd={this.onSortEnd} />
-                {/* <img async src="https://localhost:44387/api/users/photo?id=E39CB262-2433-4F04-8F6B-16452F6FE4BC" style={{
-                    width: "100px",
-                    height: "100px",
-                    border: "solid black 2px"
-                }}></img> */}
-
             </div>
         );
     };
