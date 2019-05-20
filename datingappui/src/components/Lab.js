@@ -18,40 +18,26 @@ export class Lab extends Component {
         }
 
         var login = new LoginManager();
-        var sdk = new Sdk(new Configuration());
+        var config = new Configuration();
+        var sdk = new Sdk(config);
         var user = login.getUser();
         var thisRef = this;
 
-        sdk.PostReturnPromise("/api/users/get_user", {
-            "IncludePhotos": "true",
-            "UserID": user.ID
-        }).then((response) => {
-            if (response.data.Sucess) {
-                thisRef.state.images = [];
-                response.data.Result.Photos.forEach(function (item, index) {
-                    thisRef.state.images.push("https://localhost:44387/api/users/photo?id=" + item.ID);
-                });
-                thisRef.setState(thisRef.state);
-            }
-        })
+        sdk.SetUserPhotos(user.ID)
+            .then((response) => {
+                if (response.data.Sucess) {
+                    
+                }
+            })
             .catch((error) => {
                 console.log("From get Photos ERROR")
                 console.log(error);
             });
     }
 
-    componentDidMount() {
-        console.log("component mounted");
-    }
-
-    onSortEnd = ({ oldIndex, newIndex }) => {
-        this.setState({ images: arrayMove(this.state.images, oldIndex, newIndex) })
-    }
-
     render() {
         return (
             <div>
-                <ImgContainer images={this.state.images} onSortEnd={this.onSortEnd} />
             </div>
         );
     };

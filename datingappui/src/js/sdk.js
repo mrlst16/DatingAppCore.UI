@@ -28,7 +28,7 @@ export default function Sdk(config) {
         return this;
     }
 
-    this.PostReturnPromise = function (url, data, succssCallback) {
+    this.PostReturnPromise = function (url, data) {
         return axios({
             method: 'post',
             url: config.ApiBaseUrl + url,
@@ -77,14 +77,14 @@ export default function Sdk(config) {
         return Post(config.ApiBaseUrl + "/api/users/set_user_settings", { UserID: userid, Properties: settings }, successCallback);
     }
 
-    this.GetUserPhotos = function (userid, successCallback) {
-        var url = config.ApiBaseUrl + "/api/users/get_user";
-        console.log("url: " + url);
-        return this.PostReturnPromise(
-            url,
-            {
-                "IncludePhotos": "true",
-                "UserID": userid
-            }, successCallback)
+    this.GetUserPhotos = function (userid) {
+        return this.PostReturnPromise("/api/users/get_user", {
+            "IncludePhotos": "true",
+            "UserID": userid
+        });
+    }
+
+    this.SetUserPhotos = function (data) {
+        return this.PostReturnPromise("/api/users/set_photos", data);
     }
 }

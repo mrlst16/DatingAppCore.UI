@@ -3,19 +3,45 @@ import Login from './Login'
 import Sdk from '../js/sdk'
 import Configuration from '../js/Configuration';
 import LoginManager from '../js/LoginManager';
-import { FormControl, FormGroup, FormLabel } from 'react-bootstrap'
-import Form from 'react-bootstrap/FormControl';
 import $ from 'jquery'
 import axios from 'axios'
+
+import Sortable, { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc'
+import { ImgContainer, SortableImageContainer } from './SortableImages'
 
 
 export class ManagePhotos extends Component {
 
     constructor() {
         super();
+
+        this.state = {
+            images: []
+        }
+
+        var login = new LoginManager();
+        var config = new Configuration();
+        var sdk = new Sdk(config);
+        var user = login.getUser();
+        var thisRef = this;
+
+        sdk.GetUserPhotos(user.ID)
+            .then((response) => {
+                if (response.data.Sucess) {
+                    thisRef.state.images = [];
+                    response.data.Result.Photos.forEach(function (item, index) {
+                        thisRef.state.images.push(config.ApiBaseUrl + "/api/users/photo?id=" + item.ID);
+                    });
+                    thisRef.setState(thisRef.state);
+                }
+            })
+            .catch((error) => {
+                console.log("From get Photos ERROR")
+                console.log(error);
+            });
     }
 
-    handlesubmit(e) {
+    handlesubmitUpload(e) {
         e.preventDefault();
 
         var file1 = $("#file1")[0].files[0];
@@ -35,7 +61,7 @@ export class ManagePhotos extends Component {
                 'Access-Control-Allow-Origin': 'true',
                 'ClientID': config.ClientID,
                 'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword),
-                "userid" : login.getUser().ID
+                "userid": login.getUser().ID
             },
         }).then(function (response) {
             console.log("Successfully posted data to ");
@@ -47,23 +73,80 @@ export class ManagePhotos extends Component {
 
     }
 
-    render() {
+    onSortEnd = ({ oldIndex, newIndex }) => {
+        this.setState({ images: arrayMove(this.state.images, oldIndex, newIndex) })
+    }
+
+    onSaveOrderClick() {
+        console.log("Clicked Save Order")
 
         var login = new LoginManager();
-        var sdk = new Sdk(new Configuration());
+        var config = new Configuration();
+        var sdk = new Sdk(config);
+        var user = login.getUser();
+        var thisRef = this;
+
+        var data = {
+            UserID: user.ID,
+            Photos: []
+        }
+
+        console.log(this);
+
+        // this.state.images.forEach(function (item, index) {
+        //     console.log("item");
+        //     console.log(item);
+        //     data.Photos.push({
+        //         UserID : user.ID,
+        //         FileName: "",
+        //         Rank: item.index
+        //     });
+        // });
+
+        // sdk.SetUserPhotos(data)
+        //     .then((response) => {
+        //         if (response.data.Sucess) {
+
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.log("From get Photos ERROR")
+        //         console.log(error);
+        //     });
+    }
+
+    render() {
 
         return (
             <div>
-                <form id="fileinfo" method="post" encType="multipart/form-data" action="api/Users/UploadFiles"  onSubmit={this.handlesubmit}>
-                    <div className="form-group">
-                        <div className="col-md-10">
-                            <p>Upload a photo</p>
-                            <input type="file" name="file" id="file1" accept="image/x-png,image/gif,image/jpeg" />
-                            <input type="submit" value="Upload" id="uploadBTN" />
+                <div className="container">
+                    <div className="row">
+
+                        <div className="col-8">
+                            <div className="row">
+                                <form id="fileinfo" method="post" encType="multipart/form-data" action="api/Users/UploadFiles" onSubmit={this.handlesubmitUpload}>
+                                    <div className="form-group">
+                                        <div className="col-md-12">
+                                            <p>Upload a photo</p>
+                                            <input type="file" name="file" id="file1" accept="image/x-png,image/gif,image/jpeg" />
+                                            <input type="submit" value="Upload" id="uploadBTN" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="row">
+                                <div className="col-12">
+                                    <input type="submit" className="button" value="Save Order" onClick={()=>{this.onSaveOrderClick()}} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-4">
+                            <ImgContainer images={this.state.images} onSortEnd={this.onSortEnd} />
                         </div>
                     </div>
+                </div>
 
-                </form>
+
             </div>
         );
     };
