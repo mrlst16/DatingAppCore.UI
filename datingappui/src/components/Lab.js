@@ -23,16 +23,6 @@ export class Lab extends Component {
         var user = login.getUser();
         var thisRef = this;
 
-        sdk.SetUserPhotos(user.ID)
-            .then((response) => {
-                if (response.data.Sucess) {
-                    
-                }
-            })
-            .catch((error) => {
-                console.log("From get Photos ERROR")
-                console.log(error);
-            });
     }
 
     render() {

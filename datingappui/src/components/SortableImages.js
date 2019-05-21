@@ -33,9 +33,10 @@ export class Image extends Component {
 }
 
 export const ImgContainer = SortableContainer((props) => {
+    console.log(props.images);
     return (
         <div>
-            {props.images.map((image, index) => <SortableImageContainer key={image} index={index} image={image} />)}
+            {props.images.map((image, index) => <SortableImageContainer key={image.src} index={index} image={image.src} />)}
         </div>
     )
 });

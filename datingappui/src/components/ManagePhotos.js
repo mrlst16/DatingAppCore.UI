@@ -30,7 +30,11 @@ export class ManagePhotos extends Component {
                 if (response.data.Sucess) {
                     thisRef.state.images = [];
                     response.data.Result.Photos.forEach(function (item, index) {
-                        thisRef.state.images.push(config.ApiBaseUrl + "/api/users/photo?id=" + item.ID);
+                        thisRef.state.images.push({
+                            ID: item.ID,
+                            src: config.ApiBaseUrl + "/api/users/photo?id=" + item.ID,
+                            Rank: item.Rank
+                        });
                     });
                     thisRef.setState(thisRef.state);
                 }
@@ -91,28 +95,30 @@ export class ManagePhotos extends Component {
             Photos: []
         }
 
-        console.log(this);
+        this.state.images.forEach(function (item, index) {
+            console.log("item");
+            console.log(item);
+            data.Photos.push({
+                ID : item.ID,
+                Rank: index
+            });
+        });
 
-        // this.state.images.forEach(function (item, index) {
-        //     console.log("item");
-        //     console.log(item);
-        //     data.Photos.push({
-        //         UserID : user.ID,
-        //         FileName: "",
-        //         Rank: item.index
-        //     });
-        // });
+        console.log("data");
+        console.log(data);
 
-        // sdk.SetUserPhotos(data)
-        //     .then((response) => {
-        //         if (response.data.Sucess) {
+        sdk.SetUserPhotos(data)
+            .then((response) => {
+                console.log("From Set Photos THEN")
+                console.log(response);
+                if (response.data.Sucess) {
 
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.log("From get Photos ERROR")
-        //         console.log(error);
-        //     });
+                }
+            })
+            .catch((error) => {
+                console.log("From Set Photos ERROR")
+                console.log(error);
+            });
     }
 
     render() {
@@ -136,7 +142,7 @@ export class ManagePhotos extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-12">
-                                    <input type="submit" className="button" value="Save Order" onClick={()=>{this.onSaveOrderClick()}} />
+                                    <input type="submit" className="button" value="Save Order" onClick={() => { this.onSaveOrderClick() }} />
                                 </div>
                             </div>
                         </div>
