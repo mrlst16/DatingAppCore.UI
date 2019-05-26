@@ -21,9 +21,9 @@ export class Settings extends Component {
         var user = login.getUser();
 
         var self = this;
-        sdk.PostReturnPromise("/api/users/get_user", {
+        sdk.Post("/api/users/get_user", {
             "IncludeProfile": "true",
-            "UserID" : user.ID
+            "UserID" : user.id
         }).then((response=>{
             if(response.data.Result){
                 self.state = response.data.Result.Settings;
@@ -54,7 +54,7 @@ export class Settings extends Component {
             
 
             console.log("About to try and set profile")
-            sdk.SetSettings(user.ID, this.state, function(response){
+            sdk.SetSettings(user.id, this.state, function(response){
                 console.log("From handle submit callback");
                 console.log(response);
             });

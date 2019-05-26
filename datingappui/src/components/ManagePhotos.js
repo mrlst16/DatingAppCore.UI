@@ -19,20 +19,23 @@ export class ManagePhotos extends Component {
             images: []
         }
 
+        console.log("Manage Photos");
         var login = new LoginManager();
         var config = new Configuration();
         var sdk = new Sdk(config);
         var user = login.getUser();
         var thisRef = this;
 
-        sdk.GetUserPhotos(user.ID)
+        sdk.GetUserPhotos(user.id)
             .then((response) => {
+                console.log("response");
+                console.log(response);
                 if (response.data.Sucess) {
                     thisRef.state.images = [];
                     response.data.Result.Photos.forEach(function (item, index) {
                         thisRef.state.images.push({
                             ID: item.ID,
-                            src: config.ApiBaseUrl + "/api/users/photo?id=" + item.ID,
+                            src: config.ApiBaseUrl + "/api/users/get_photo?id=" + item.ID,
                             Rank: item.Rank
                         });
                     });
@@ -58,18 +61,16 @@ export class ManagePhotos extends Component {
 
         axios({
             method: 'post',
-            url: 'https://localhost:44387/api/users/uploadfiles',
+            url: 'https://localhost:44387/api/users/upload_photo',
             data: formData,
             headers: {
                 'Content-Type': 'multipart/formdata',
                 'Access-Control-Allow-Origin': 'true',
                 'ClientID': config.ClientID,
                 'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword),
-                "userid": login.getUser().ID
+                "userid": login.getUser().id
             },
         }).then(function (response) {
-            console.log("Successfully posted data to ");
-            console.log(response);
         }).catch(function (error) {
             console.log("Error posting data to ");
             console.log(error);
@@ -91,29 +92,19 @@ export class ManagePhotos extends Component {
         var thisRef = this;
 
         var data = {
-            UserID: user.ID,
+            UserID: user.id,
             Photos: []
         }
 
         this.state.images.forEach(function (item, index) {
-            console.log("item");
-            console.log(item);
             data.Photos.push({
-                ID : item.ID,
+                ID: item.ID,
                 Rank: index
             });
         });
 
-        console.log("data");
-        console.log(data);
-
         sdk.SetUserPhotos(data)
             .then((response) => {
-                console.log("From Set Photos THEN")
-                console.log(response);
-                if (response.data.Sucess) {
-
-                }
             })
             .catch((error) => {
                 console.log("From Set Photos ERROR")
@@ -127,7 +118,6 @@ export class ManagePhotos extends Component {
             <div>
                 <div className="container">
                     <div className="row">
-
                         <div className="col-8">
                             <div className="row">
                                 <form id="fileinfo" method="post" encType="multipart/form-data" action="api/Users/UploadFiles" onSubmit={this.handlesubmitUpload}>
