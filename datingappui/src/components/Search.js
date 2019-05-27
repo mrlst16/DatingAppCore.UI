@@ -11,48 +11,7 @@ export class Search extends Component {
     constructor() {
         super();
 
-        var login = new LoginManager();
-        var config = new Configuration();
-        var sdk = new Sdk(config);
-        var user = login.getUser();
-        var thisRef = this;
-    }
-
-    checkGeoLocationOn() {
-        return new Promise((resolve) => {
-
-
-        });
-        // if (!navigator.geolocation) {
-        //     console.log("geolocation not supported")
-        // } else {
-        //     var balls = document.getElementById('balls');
-        //     function showPosition(position) {
-        //         console.log('this cgot called')
-        //         balls.innerHTML = "Latitude: " + position.coords.latitude +
-        //             "<br>Longitude: " + position.coords.longitude;
-        //     }
-        //     navigator.geolocation.getCurrentPosition(showPosition, function (e) {
-        //         console.log(e);
-        //     });
-
-        // }
-    }
-
-    render() {
-        // new Promise((resove, reject) => {
-        //     if (!navigator.geolocation) {
-        //         reject();
-        //     } else {
-        //         return navigator.geolocation.getCurrentPosition(resolve);
-        //     }
-        // }).then((response) => {
-        //     console.log("resonse from custom promise");
-        //     console.log(response);
-        // }).catch((error) => {
-        //     console.log("error from the custom promise");
-        //     console.log(error);
-        // });
+        var self = this;
 
         new Promise((resolve) => {
             console.log('Initial');
@@ -62,12 +21,42 @@ export class Search extends Component {
                 throw new Error("Navigation is not turned on");
             }
         }).then((r) => {
-            console.log("Doing then");
-            console.log(r);
+            var login = new LoginManager();
+            var sdk = new Sdk(new Configuration());
+            var user = login.getUser();
+
+            console.log(user);
+
+            sdk.Post("/api/users/record_user_location", {
+                "UserID": user.id,
+                "Lat" : r.coords.latitude,
+                "Lon" : r.coords.longitude
+            }).then((response => {
+            })).catch((error) => {
+                console.log("error");
+                console.log(error);
+            });
+
         }).catch((er) => {
             console.log("ruh roh");
             console.log(er);
-        })
+        });
+    }
+
+    render() {
+        var login = new LoginManager();
+        var config = new Configuration();
+        var sdk = new Sdk(config);
+        var user = login.getUser();
+        var thisRef = this;
+
+        
+        sdk.Post("/api/matches/potential_matches", {
+            UserID : user.id
+        }).then((response)=>{
+            console.log("Response from getting potential matches");
+            console.log(response);
+        });
 
         let page;
         if (!navigator.geolocation) {
@@ -78,7 +67,7 @@ export class Search extends Component {
                 <div>
                     <h3>Search</h3>
                     <div>
-
+                        
                     </div>
                 </div>
         }

@@ -71,6 +71,7 @@ export class ManagePhotos extends Component {
                 "userid": login.getUser().id
             },
         }).then(function (response) {
+            window.location.reload();
         }).catch(function (error) {
             console.log("Error posting data to ");
             console.log(error);
