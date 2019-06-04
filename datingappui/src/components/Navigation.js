@@ -30,8 +30,7 @@ export class Navigation extends Component {
             filler = 
             <Nav className="mr-auto">
                 <Nav.Link href="/search">Search</Nav.Link>
-                <Nav.Link href="/messaging">Messaging</Nav.Link>
-                <Nav.Link href="/reviews">Reviews</Nav.Link>
+                <Nav.Link href="/matches">Matches</Nav.Link>
                 <NavDropdown title="Account" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/profile_editor">Profile Editor</NavDropdown.Item>
                     <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>

@@ -75,8 +75,6 @@ export class Search extends Component {
             UserToID: user.id,
             IsLike: answer
         }).then((response) => {
-            console.log("Response from recording swipe");
-            console.log(response);
             var state = this.state;
             state.PotentialMatches.pop(user);
             self.setState(state);
@@ -108,7 +106,7 @@ export class Search extends Component {
                                                 Images will go here
                                             </div>
                                             <div className="swipe_container" data-obj={JSON.stringify(x)}>
-                                                <input type="button" value="Yes" onClick={(e) => this.recordSwipe(false, x)} />
+                                                <input type="button" value="No" onClick={(e) => this.recordSwipe(false, x)} />
                                                 <input type="button" value="Yes" onClick={(e) => this.recordSwipe(true, x)} />
                                             </div>
                                         </div>

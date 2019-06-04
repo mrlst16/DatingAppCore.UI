@@ -8,12 +8,11 @@ import Lab from './components/Lab'
 import ProfileEditor from './components/ProfileEditor';
 import Search from './components/Search';
 import Reviews from './components/Reviews';
-import Messaging from './components/Messaging';
 import Settings from './components/Settings';
-import Account from './components/Account';
 import PleaseLogin from './components/PleaseLogin';
 import LoginManager from './js/LoginManager';
 import { ManagePhotos } from './components/ManagePhotos';
+import Matches from './components/Matches';
 
 class App extends Component {
   
@@ -41,7 +40,7 @@ class App extends Component {
               <Route path="/profile_editor" component={ProfileEditor} />
               <Route path="/search" component={Search} />
               <Route path="/reviews" component={Reviews} />
-              <Route path="/messaging" component={Messaging} />
+              <Route path="/matches" component={Matches} />
               <Route path="/settings" component={Settings} />
               <Route path="/myphotos" component={ManagePhotos} />
               <Route path="/lab" component={Lab} />
