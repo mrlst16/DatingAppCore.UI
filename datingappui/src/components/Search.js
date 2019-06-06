@@ -6,6 +6,7 @@ import LoginManager from '../js/LoginManager';
 import { Error } from './Error';
 import ReactDOM from 'react-dom';
 import { stat } from 'fs';
+import MiniProfileForSearch from './Profile/MiniProfileForSearch';
 
 export class Search extends Component {
     constructor() {
@@ -65,8 +66,8 @@ export class Search extends Component {
         });
     }
 
-    recordSwipe(answer, user) {
-        console.log("Recording swipe " + answer + " for user " + user.id);
+    recordSwipe(answer, user, index) {
+        console.log("Recording swipe " + answer + " from user " + this.user.id + " to user " + user.id);
         console.log(this.user);
 
         var self = this;
@@ -75,19 +76,17 @@ export class Search extends Component {
             UserToID: user.id,
             IsLike: answer
         }).then((response) => {
-            var state = this.state;
-            state.PotentialMatches.pop(user);
-            self.setState(state);
+            console.log("swipe response")
+            console.log(response);
+            if (response.data.sucess) {
+                var state = this.state;
+                state.PotentialMatches.splice(index, 1);
+                self.setState(state);
+            }
         });
     }
 
     render() {
-        var login = new LoginManager();
-        var config = new Configuration();
-        var sdk = new Sdk(config);
-        var user = login.getUser();
-        var thisRef = this;
-
         let page;
         if (!navigator.geolocation) {
             page = <Error heading="No Geolocation" message="Please Enable Geolocation to search for your Potential Match!"></Error>
@@ -101,15 +100,11 @@ export class Search extends Component {
                             {
                                 this.state.PotentialMatches.map((x, i) => {
                                     return <li key={x.id}>
-                                        <div>
-                                            <div className="image_container">
-                                                Images will go here
-                                            </div>
-                                            <div className="swipe_container" data-obj={JSON.stringify(x)}>
-                                                <input type="button" value="No" onClick={(e) => this.recordSwipe(false, x)} />
-                                                <input type="button" value="Yes" onClick={(e) => this.recordSwipe(true, x)} />
-                                            </div>
-                                        </div>
+                                        <MiniProfileForSearch
+                                            onSelectNo={(e) => this.recordSwipe(false, x, i)}
+                                            onSelectYes={(e) => this.recordSwipe(true, x, i)}
+                                            UserID={x.id}
+                                        />
                                     </li>
                                 })
                             }
