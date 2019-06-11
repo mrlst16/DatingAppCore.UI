@@ -13,6 +13,7 @@ import PleaseLogin from './components/PleaseLogin';
 import LoginManager from './js/LoginManager';
 import { ManagePhotos } from './components/ManagePhotos';
 import Matches from './components/Matches';
+import Messaging from './components/Messaging';
 
 class App extends Component {
   
@@ -41,6 +42,7 @@ class App extends Component {
               <Route path="/search" component={Search} />
               <Route path="/reviews" component={Reviews} />
               <Route path="/matches" component={Matches} />
+              <Route path="/messaging/:userid" component={Messaging} />
               <Route path="/settings" component={Settings} />
               <Route path="/myphotos" component={ManagePhotos} />
               <Route path="/lab" component={Lab} />

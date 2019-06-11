@@ -4,6 +4,7 @@ import Sdk from '../js/sdk';
 import Configuration from '../js/Configuration';
 import LoginManager from '../js/LoginManager';
 import { stat } from 'fs';
+import MiniProfile from './Profile/MiniProfile';
 
 export class Matches extends Component {
     constructor() {
@@ -44,7 +45,7 @@ export class Matches extends Component {
                         this.state.matches.map((x, i)=>
                             <li>
                                 <div>
-                                    <h6>{x.id}</h6>
+                                    <MiniProfile UserID={x.id}></MiniProfile>
                                 </div>
                             </li>
                         )

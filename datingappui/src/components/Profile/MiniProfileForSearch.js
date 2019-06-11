@@ -8,7 +8,7 @@ export class MiniProfileForSearch extends Component {
 
     constructor(props) {
         super(props);
-        console.log("MiniProfile");
+        console.log("MiniProfileForSearch");
         console.log(props);
         this.props = props;
 
@@ -55,11 +55,6 @@ export class MiniProfileForSearch extends Component {
     }
 
     render() {
-        console.log(this.state);
-        Object.keys(this.state.User.Profile).map((x, i) => {
-            console.log(x);
-        }
-        )
         return (
             <div>
                 <h3>{this.state.User.ID}</h3>
