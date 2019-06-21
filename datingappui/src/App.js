@@ -43,6 +43,7 @@ class App extends Component {
               <Route path="/reviews" component={Reviews} />
               <Route path="/matches" component={Matches} />
               <Route path="/messaging/:userid" component={Messaging} />
+              <Route path="/reviews/:userid" component={Reviews} />
               <Route path="/settings" component={Settings} />
               <Route path="/myphotos" component={ManagePhotos} />
               <Route path="/lab" component={Lab} />
