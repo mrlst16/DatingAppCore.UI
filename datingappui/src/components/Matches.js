@@ -13,7 +13,7 @@ export class Matches extends Component {
         this.state = {};
         this.state.matches = [];
     }
-
+    
     componentDidMount() {
         var config = new Configuration();
         var sdk = new Sdk(config);

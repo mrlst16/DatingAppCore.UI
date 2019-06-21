@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import DatingAppComponent from './DatingAppComponent';
 
-export class Account extends Component {
+export class Account extends DatingAppComponent {
 
     constructor(){
         super();

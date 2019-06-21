@@ -75,7 +75,7 @@ export class MiniProfile extends Component {
                         }
                     </ul>
                 </div>
-                <a href={"messaging/userid=" + this.state.User.ID}>Message</a>
+                <a href={"messaging/" + this.state.User.ID}>Message</a>
             </div>
         );
     };

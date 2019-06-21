@@ -3,32 +3,52 @@ import Login from './Login'
 import Sdk from '../js/sdk'
 import Configuration from '../js/Configuration';
 import LoginManager from '../js/LoginManager';
-import { FormControl, FormGroup, FormLabel } from 'react-bootstrap'
-import Form from 'react-bootstrap/FormControl';
-import axios from 'axios'
-import Sortable, { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc'
-import { ImgContainer, SortableImageContainer } from './SortableImages'
+import { HubConnection } from '@aspnet/signalr';
+import DatingAppComponent from './DatingAppComponent';
 
-export class Lab extends Component {
+export class Lab extends DatingAppComponent {
 
     constructor() {
         super();
         this.state = {
-            images: []
+            nick: '',
+            message: '',
+            messages: [],
+            hubConnection: null
         }
 
-        var login = new LoginManager();
-        var config = new Configuration();
-        var sdk = new Sdk(config);
-        var user = login.getUser();
-        var thisRef = this;
+
+
+    }
+
+    componentDidMount = () => {
+        //const nick = window.prompt('Your name:', 'John');
+
+        //const hubConnection = new HubConnection('http://localhost:30005/chatHub');
+        const signalR = require("@aspnet/signalr");
+
+        let connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chat")
+            .build();
+        console.log(signalR);
+        console.log(connection);
+
+        // const script = document.createElement("script");
+        // script.src = "/static/libs/your_script.js";
+        // script.async = true;
+        //script.onload = () => this.scriptLoaded();
+
+        // document.head.appendChild(script);
+        //this.setState({ hubConnection, nick });
+
 
     }
 
     render() {
         return (
             <div>
-                
+                <h3>The Lab</h3>
+                <div>Here goes chat</div>
             </div>
         );
     };
