@@ -1,9 +1,21 @@
 import axios from 'axios'
 
-
 export default function Sdk(config) {
 
     var config = config;
+
+    this.Get = function (url) {
+        return axios({
+            method: 'get',
+            url: config.ApiBaseUrl + url,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'true',
+                'ClientID': config.ClientID,
+                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
+            }
+        });
+    }
 
     this.Post = function (url, data) {
         return axios({
@@ -28,22 +40,6 @@ export default function Sdk(config) {
         console.log(this);
         return this.Post("/api/users/login_or_signup", data);
     }
-
-    // this.LoginOrSignupWithFacebook = function (userid) {
-    //     return LoginOrSignup({
-    //         User: {
-    //             ExternalID: userid,
-    //             IdType: 1
-    //         }
-    //     })
-    //         .then((response) => {
-    //             localStorage.setItem("user", JSON.stringify(response.data.Result.User));
-    //             window.location.reload();
-    //         }).catch((er) => {
-    //             console.log("Error in Login Or Signup With Facebook");
-    //             console.log(er);
-    //         });
-    // }
 
     this.GetProfile = function (userid, successCallback) {
         return this.GetUser({

@@ -10,8 +10,9 @@ export class Matches extends Component {
     constructor() {
         super();
 
-        this.state = {};
-        this.state.matches = [];
+        this.state = {
+            matches : []
+        };
     }
     
     componentDidMount() {
