@@ -54,6 +54,21 @@ export default function Sdk(config) {
         return this.Post("/api/users/set_user_settings", { UserID: userid, Properties: settings }, successCallback);
     }
 
+    this.UploadPhoto = function (formData, userid) {
+        return axios({
+            method: 'post',
+            url: config.ApiBaseUrl + '/api/users/upload_photo',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/formdata',
+                'Access-Control-Allow-Origin': 'true',
+                'ClientID': config.ClientID,
+                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword),
+                "userid": userid
+            }
+        });
+    }
+
     this.GetUserPhotos = function (userid) {
         return this.Post("/api/users/get_user", {
             "IncludePhotos": "true",
@@ -65,7 +80,4 @@ export default function Sdk(config) {
         return this.Post("/api/users/set_photos", data);
     }
 
-    this.UploadPhoto = function(){
-        
-    }
 }

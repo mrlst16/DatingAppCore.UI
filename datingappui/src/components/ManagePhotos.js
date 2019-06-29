@@ -5,37 +5,34 @@ import Configuration from '../js/Configuration';
 import LoginManager from '../js/LoginManager';
 import $ from 'jquery'
 import axios from 'axios'
+import DatingAppComponent from '../components/DatingAppComponent'
 
 import Sortable, { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc'
 import { ImgContainer, SortableImageContainer } from './SortableImages'
 
 
-export class ManagePhotos extends Component {
+export class ManagePhotos extends DatingAppComponent {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             images: []
         }
 
+        this.handlesubmitUpload = this.handlesubmitUpload.bind(this);
+
         console.log("Manage Photos");
-        var login = new LoginManager();
-        var config = new Configuration();
-        var sdk = new Sdk(config);
-        var user = login.getUser();
         var thisRef = this;
 
-        sdk.GetUserPhotos(user.id)
+        this.sdk.GetUserPhotos(this.user.id)
             .then((response) => {
-                console.log("response");
-                console.log(response);
                 if (response.data.Sucess) {
                     thisRef.state.images = [];
                     response.data.Result.Photos.forEach(function (item, index) {
                         thisRef.state.images.push({
                             ID: item.ID,
-                            src: config.ApiBaseUrl + "/api/users/get_photo?id=" + item.ID,
+                            src: thisRef.config.ApiBaseUrl + "/api/users/get_photo?id=" + item.ID,
                             Rank: item.Rank
                         });
                     });
@@ -43,7 +40,7 @@ export class ManagePhotos extends Component {
                 }
             })
             .catch((error) => {
-                console.log("From get Photos ERROR")
+                console.log("From get GetUserPhotos ERROR")
                 console.log(error);
             });
     }
@@ -56,27 +53,13 @@ export class ManagePhotos extends Component {
         var formData = new FormData();
         formData.append("files", file1);
 
-        var config = new Configuration();
-        var login = new LoginManager();
-
-        axios({
-            method: 'post',
-            url: 'https://localhost:44387/api/users/upload_photo',
-            data: formData,
-            headers: {
-                'Content-Type': 'multipart/formdata',
-                'Access-Control-Allow-Origin': 'true',
-                'ClientID': config.ClientID,
-                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword),
-                "userid": login.getUser().id
-            },
-        }).then(function (response) {
-            window.location.reload();
-        }).catch(function (error) {
-            console.log("Error posting data to ");
-            console.log(error);
-        });
-
+        this.sdk.UploadPhoto(formData, this.user.id)
+            .then(function (response) {
+                window.location.reload();
+            }).catch(function (error) {
+                console.log("Error posting data to ");
+                console.log(error);
+            });
     }
 
     onSortEnd = ({ oldIndex, newIndex }) => {
@@ -85,15 +68,10 @@ export class ManagePhotos extends Component {
 
     onSaveOrderClick() {
         console.log("Clicked Save Order")
-
-        var login = new LoginManager();
-        var config = new Configuration();
-        var sdk = new Sdk(config);
-        var user = login.getUser();
         var thisRef = this;
 
         var data = {
-            UserID: user.id,
+            UserID: this.user.id,
             Photos: []
         }
 
@@ -104,11 +82,11 @@ export class ManagePhotos extends Component {
             });
         });
 
-        sdk.SetUserPhotos(data)
+        this.sdk.SetUserPhotos(data)
             .then((response) => {
             })
             .catch((error) => {
-                console.log("From Set Photos ERROR")
+                console.log("From SetUserPhotos ERROR")
                 console.log(error);
             });
     }
