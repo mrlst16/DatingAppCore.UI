@@ -20,7 +20,7 @@ export default function LoginManager() {
         }
     }
 
-    this.IsLoggedIn = function () {
+    this.isLoggedIn = function () {
         return localStorage.getItem("user") !== null;
     }
 

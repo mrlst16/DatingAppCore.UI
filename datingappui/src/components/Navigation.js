@@ -1,32 +1,26 @@
 import React, { Component } from 'react'
 import {Navbar, Nav, NavDropdown, Form} from 'react-bootstrap'
 import LoginManager from '../js/LoginManager';
+import DatingAppComponent from '../components/DatingAppComponent';
 
-export class Navigation extends Component {
-    constructor(){
-        super();
-        this.Login = new LoginManager();
-
+export class Navigation extends DatingAppComponent {
+    constructor(props){
+        super(props);
     }
 
-    logout = ()=>{
-        this.Login.logout();
+    LogOutUser = ()=>{
+        this.login.logout();
     }
 
-    login = (platform)=>{
-        this.Login.logIn(platform);
+    LogInUser = (platform)=>{
+        this.login.logIn(platform);
     }
 
     render() {
-        var login = new LoginManager();
-        var l = login.IsLoggedIn();
-        
         let filler;
-        
-        
-        if(l){
+        if(this.login.isLoggedIn()){
             console.log("The user is logged in");
-            console.log(this.Login.getUser());
+            console.log(this.login.getUser());
             filler = 
             <Nav className="mr-auto">
                 <Nav.Link href="/search">Search</Nav.Link>
@@ -36,15 +30,15 @@ export class Navigation extends Component {
                     <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
                     <NavDropdown.Item href="/myphotos">My Photos</NavDropdown.Item>
                 </NavDropdown>
-                <Nav.Link href="#" onClick={this.logout}>Log Out</Nav.Link>
-                
+                <Nav.Link href="#" onClick={this.LogOutUser}>Log Out</Nav.Link>
+
                 <Nav.Link href="/lab">Lab</Nav.Link>
             </Nav>
         } else {
             filler = 
             <Nav>
                 <NavDropdown title="Login" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#" onClick={()=>{this.login("facebook")}}>Facebook</NavDropdown.Item>
+                    <NavDropdown.Item href="#" onClick={()=>{this.LogInUser("facebook")}}>Facebook</NavDropdown.Item>
                 </NavDropdown>
             </Nav>
         }

@@ -36,8 +36,6 @@ export default function Sdk(config) {
     }
 
     function LoginOrSignup(data) {
-        console.log("LoginOrSignup");
-        console.log(this);
         return this.Post("/api/users/login_or_signup", data);
     }
 
@@ -65,5 +63,9 @@ export default function Sdk(config) {
 
     this.SetUserPhotos = function (data) {
         return this.Post("/api/users/set_photos", data);
+    }
+
+    this.UploadPhoto = function(){
+        
     }
 }

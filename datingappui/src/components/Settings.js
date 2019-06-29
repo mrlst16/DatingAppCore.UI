@@ -28,8 +28,6 @@ export class Settings extends Component {
             if(response.data.Result){
                 self.state = response.data.Result.Settings;
                 self.setState(self.state);
-                console.log("self.state");
-                console.log(self.state);
             }
         })).catch((error)=>{
             console.log("error");
