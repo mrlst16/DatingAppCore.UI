@@ -7,83 +7,52 @@ import { Error } from './Error';
 import ReactDOM from 'react-dom';
 import { stat } from 'fs';
 import MiniProfileForSearch from './Profile/MiniProfileForSearch';
+import DatingAppComponent from './DatingAppComponent';
 
-export class Search extends Component {
+export class Search extends DatingAppComponent {
     constructor() {
         super();
         this.state = { PotentialMatches: [] };
         var self = this;
 
-        var login = new LoginManager();
-        this.sdk = new Sdk(new Configuration());
-        var user = login.getUser();
-        this.user = user;
-
         new Promise((resolve) => {
-            console.log('Initial');
             if (navigator.geolocation) {
                 return navigator.geolocation.getCurrentPosition(resolve);
             } else {
                 throw new Error("Navigation is not turned on");
             }
         }).then((r) => {
-            var login = new LoginManager();
-            var sdk = new Sdk(new Configuration());
-            var user = login.getUser();
-
-            console.log(user);
-
-            sdk.Post("/api/users/record_user_location", {
-                "UserID": user.id,
-                "Lat": r.coords.latitude,
-                "Lon": r.coords.longitude
-            }).then((response => {
-            })).catch((error) => {
-                console.log("error");
-                console.log(error);
-            });
-
+            this.sdk.RecordUserLocation(this.user.id, r.coords.latitude, r.coords.longitude)
+                .then((response => {
+                })).catch((error) => {
+                    console.log("error");
+                    console.log(error);
+                });
         }).catch((er) => {
-            console.log("ruh roh");
+            console.log("Error in RecordUserLocation");
             console.log(er);
         });
     }
 
     componentDidMount() {
-        console.log("Component did mount");
-        var login = new LoginManager();
-        var config = new Configuration();
-        var sdk = new Sdk(config);
-        var user = login.getUser();
         var thisRef = this;
 
-        sdk.Post("/api/matches/potential_matches", {
-            UserID: user.id
-        }).then((response) => {
-            console.log("Response from getting potential matches");
-            console.log(response);
-            thisRef.setState({ PotentialMatches: response.data.result });
-        });
+        this.sdk.PotentialMatches(this.user.id)
+            .then((response) => {
+                thisRef.setState({ PotentialMatches: response.data.result });
+            });
     }
 
     recordSwipe(answer, user, index) {
-        console.log("Recording swipe " + answer + " from user " + this.user.id + " to user " + user.id);
-        console.log(this.user);
-
         var self = this;
-        this.sdk.Post("/api/matches/swipe", {
-            UserFromID: this.user.id,
-            UserToID: user.id,
-            IsLike: answer
-        }).then((response) => {
-            console.log("swipe response")
-            console.log(response);
-            if (response.data.sucess) {
-                var state = this.state;
-                state.PotentialMatches.splice(index, 1);
-                self.setState(state);
-            }
-        });
+        this.sdk.Swipe(this.user.id, user.id, answer)
+            .then((response) => {
+                if (response.data.sucess) {
+                    var state = this.state;
+                    state.PotentialMatches.splice(index, 1);
+                    self.setState(state);
+                }
+            });
     }
 
     render() {

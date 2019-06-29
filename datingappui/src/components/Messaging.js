@@ -22,17 +22,8 @@ export class Messaging extends DatingAppComponent {
 
     sendMessage(e) {
         e.preventDefault();
-        console.log("Sending message");
-
         var message = document.getElementById("message").value;
-        this.sdk.Post(
-            "/api/messaging/send",
-            {
-                From: this.user.id,
-                To: this.toUserId,
-                Message: message
-            }
-        )
+        this.sdk.SendMessage(this.user.id, this.toUserId, message)
             .then((response) => {
                 console.log("response from send");
                 console.log(response);
@@ -42,22 +33,12 @@ export class Messaging extends DatingAppComponent {
                 console.log("From send ERROR")
                 console.log(error);
             });
-
     }
 
     componentDidMount() {
-        console.log("component did mount")
         var self = this;
-        this.sdk.Post(
-            "/api/messaging/read",
-            {
-                User1ID: this.user.id,
-                User2ID: this.toUserId
-            }
-        )
+        this.sdk.ReadMessages(this.user.id, this.toUserId)
             .then((response) => {
-                console.log("response");
-                console.log(response);
                 if (response.data.sucess) {
                     self.state.Messages = response.data.result.messages;
                     self.setState(self.state);

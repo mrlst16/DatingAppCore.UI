@@ -80,4 +80,52 @@ export default function Sdk(config) {
         return this.Post("/api/users/set_photos", data);
     }
 
+    this.GetUserMatches = function (userid) {
+        return this.Post("/api/matches/matches", {
+            UserID: this.user.id
+        });
+    }
+
+    this.ReadMessages = function (user1, user2) {
+        return this.Post(
+            "/api/messaging/read",
+            {
+                User1ID: user1,
+                User2ID: user2
+            }
+        )
+    }
+
+    this.SendMessage = function (from, to, message) {
+        return this.Post(
+            "/api/messaging/send",
+            {
+                From: from,
+                To: to,
+                Message: message
+            }
+        );
+    }
+
+    this.RecordUserLocation = function (userid, lat, lon) {
+        return this.Post("/api/users/record_user_location", {
+            "UserID": userid,
+            "Lat": lat,
+            "Lon": lon
+        });
+    }
+
+    this.PotentialMatches = function (userid) {
+        return this.Post("/api/matches/potential_matches", {
+            UserID: userid
+        });
+    }
+
+    this.Swipe = function (from, to, isLike) {
+        return this.Post("/api/matches/swipe", {
+            UserFromID: from,
+            UserToID: to,
+            IsLike: isLike
+        })
+    }
 }

@@ -4,8 +4,9 @@ import { Form, Button } from 'react-bootstrap'
 import Sdk from '../js/sdk';
 import Configuration from '../js/Configuration';
 import LoginManager from '../js/LoginManager';
+import DatingAppComponent from '../components/DatingAppComponent';
 
-export class ProfileEditor extends Component {
+export class ProfileEditor extends DatingAppComponent {
     constructor(props) {
         super(props);
 
@@ -16,17 +17,8 @@ export class ProfileEditor extends Component {
     }
 
     TryGetStateFromApi() {
-        console.log("In TryGetStateFromApi");
-        var login = new LoginManager();
-        var sdk = new Sdk(new Configuration());
-        var user = login.getUser();
-        console.log(user);
         var self = this;
-        sdk.Post("/api/users/get_user", {
-            "IncludeProfile": "true",
-            "UserID": user.id 
-        }).then((response => {
-            console.log(response);
+        this.sdk.GetProfile(this.user.id).then((response => {
             if (response.data.Result) {
                 self.state = response.data.Result.Profile;
                 self.setState(self.state);
@@ -41,25 +33,17 @@ export class ProfileEditor extends Component {
         var state = this.state;
         state[event.target.name] = event.target.value;
         this.setState(state);
-        console.log(this.state);
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        try {
-            var Login = new LoginManager();
-            var sdk = new Sdk(new Configuration());
-            var user = Login.getUser();
-
-            sdk.SetProfile(user.id, this.state)
-                .then((response) => {
-                    console.log(response);
-                });
-
-        } catch (error) {
-            console.log("Error retreiving user profile");
-            console.log(error);
-        }
+        this.sdk.SetProfile(this.user.id, this.state)
+            .then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log("Error retreiving user profile");
+                console.log(error);
+            });
     }
 
     render() {

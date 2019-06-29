@@ -31,8 +31,6 @@ export class Navigation extends DatingAppComponent {
                     <NavDropdown.Item href="/myphotos">My Photos</NavDropdown.Item>
                 </NavDropdown>
                 <Nav.Link href="#" onClick={this.LogOutUser}>Log Out</Nav.Link>
-
-                <Nav.Link href="/lab">Lab</Nav.Link>
             </Nav>
         } else {
             filler = 

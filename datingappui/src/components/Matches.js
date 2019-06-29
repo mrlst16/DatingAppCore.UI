@@ -5,36 +5,29 @@ import Configuration from '../js/Configuration';
 import LoginManager from '../js/LoginManager';
 import { stat } from 'fs';
 import MiniProfile from './Profile/MiniProfile';
+import DatingAppComponent from './DatingAppComponent';
 
-export class Matches extends Component {
+export class Matches extends DatingAppComponent {
     constructor() {
         super();
 
         this.state = {
-            matches : []
+            matches: []
         };
     }
-    
-    componentDidMount() {
-        var config = new Configuration();
-        var sdk = new Sdk(config);
-        var login = new LoginManager();
-        var user = login.getUser();
 
+    componentDidMount() {
         var self = this;
 
-        sdk.Post("/api/matches/matches", {
-            UserID: user.id
-        }).then((response) => {
-            console.log("Matches Success");
-            console.log(response);
-            var state = {};
-            state.matches = response.data.result;
-            self.setState(state);
-        }).catch((error)=>{
-            console.log("Matches Error");
-            console.log(error);
-        });
+        this.sdk.GetUserMatches(this.user.id)
+            .then((response) => {
+                var state = {};
+                state.matches = response.data.result;
+                self.setState(state);
+            }).catch((error) => {
+                console.log("Matches Error");
+                console.log(error);
+            });
     }
 
     render() {
@@ -43,7 +36,7 @@ export class Matches extends Component {
                 <h3>Matches</h3>
                 <ul>
                     {
-                        this.state.matches.map((x, i)=>
+                        this.state.matches.map((x, i) =>
                             <li>
                                 <div>
                                     <MiniProfile UserID={x.id}></MiniProfile>
