@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 import LoginManager from "../../js/LoginManager";
 import Configuration from "../../js/Configuration";
 import Sdk from "../../js/sdk";
+import DatingAppComponent from '../DatingAppComponent';
 
 
-export class MiniProfileForSearch extends Component {
+export class MiniProfileForSearch extends DatingAppComponent {
 
     constructor(props) {
         super(props);
-        console.log("MiniProfileForSearch");
-        console.log(props);
         this.props = props;
 
         this.state = {
@@ -33,18 +32,8 @@ export class MiniProfileForSearch extends Component {
             }
         )
             .then((response) => {
-                console.log("response");
-                console.log(response);
                 if (response.data.Sucess) {
-                    self.state.images = [];
-                    response.data.Result.Photos.forEach(function (item, index) {
-                        self.state.images.push({
-                            ID: item.ID,
-                            src: self.config.ApiBaseUrl + "/api/users/get_photo?id=" + item.ID,
-                            Rank: item.Rank
-                        });
-                    });
-                    self.state.User = response.data.Result;
+                    self.state.User = self.formatUser(response.data.Result);
                     self.setState(self.state);
                 }
             })
@@ -52,23 +41,66 @@ export class MiniProfileForSearch extends Component {
                 console.log("From get Photos ERROR")
                 console.log(error);
             });
+        console.log(this.state);
+
+    }
+
+    formatUser(user) {
+        console.log("Formatting user");
+        console.log(user);
+        if (user.Profile["sex"]) {
+            user.Profile["sex"] = user.Profile["gender"] == 'f' ? 'female' : 'male'
+        }
+        if (user.Profile["gender"]) {
+            user.Profile["gender"] = user.Profile["gender"] == 'f' ? 'female' : 'male'
+        }
+        if (user.Profile["dogs"]) {
+            var feelingsOnDogs = user.Profile["dogs"];
+            console.log("Feelings on dogs");
+            console.log(feelingsOnDogs);
+            switch (feelingsOnDogs) {
+                case 't':
+                    feelingsOnDogs = 'Love Them';
+                    break;
+                case 'f':
+                    feelingsOnDogs = 'Not a fan';
+                    break;
+                case 'n':
+                    feelingsOnDogs = 'Neutral';
+                    break;
+                default:
+                    feelingsOnDogs = 'Neutral';
+            }
+            user.Profile["dogs"] = feelingsOnDogs;
+        }
+        return user;
     }
 
     render() {
+        var img = <span />;
+        var self = this;
+        if (this.state.User.Photos) {
+            var src = this.config.ApiBaseUrl + "/api/users/get_photo?userid=" + this.state.User.Photos[0].UserID + "&filename=" + this.state.User.Photos[0].FileName
+            img =
+                <img src={src} />
+        }
         return (
             <div>
                 <h3>{this.state.User.ID}</h3>
                 <div className="image_container">
-                    <img src={this.state.images[0]} />
+                    {img}
                 </div>
                 <div>
-                    <ul>
+                    <div className="container">
                         {
                             Object.keys(this.state.User.Profile).map((x, i) =>
-                                <li>{x} : {this.state.User.Profile[x]}</li>
+                                <div className="row">
+                                    <div className="col-2" key={i}>{x}</div>
+                                    <div className="col-10"> {this.state.User.Profile[x]}</div>
+                                </div>
                             )
                         }
-                    </ul>
+                    </div>
                 </div>
                 <div className="swipe_container">
                     <input type="button" value="No" onClick={this.props.onSelectNo} />

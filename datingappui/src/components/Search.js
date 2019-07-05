@@ -8,10 +8,11 @@ import ReactDOM from 'react-dom';
 import { stat } from 'fs';
 import MiniProfileForSearch from './Profile/MiniProfileForSearch';
 import DatingAppComponent from './DatingAppComponent';
+import Setting from '../components/Settings';
 
 export class Search extends DatingAppComponent {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = { PotentialMatches: [] };
         var self = this;
 
@@ -64,20 +65,23 @@ export class Search extends DatingAppComponent {
             page =
                 <div>
                     <h3>Search</h3>
-                    <div>
-                        <ul>
+                    <div className="row">
+                        <div className="col-3">
+                            <Setting></Setting>
+                        </div>
+                        <div className="col-9">
                             {
                                 this.state.PotentialMatches.map((x, i) => {
-                                    return <li key={x.id}>
+                                    return <div className="row" key={x.id}>
                                         <MiniProfileForSearch
                                             onSelectNo={(e) => this.recordSwipe(false, x, i)}
                                             onSelectYes={(e) => this.recordSwipe(true, x, i)}
                                             UserID={x.id}
                                         />
-                                    </li>
+                                    </div>
                                 })
                             }
-                        </ul>
+                        </div>
                     </div>
                 </div>
         }

@@ -9,8 +9,6 @@ export class Messaging extends DatingAppComponent {
     constructor(props) {
         super(props);
 
-        console.log("Messaging");
-        console.log(this.props);
         this.state = {
             Messages: []
         };

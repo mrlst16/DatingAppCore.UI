@@ -22,7 +22,6 @@ export class ManagePhotos extends DatingAppComponent {
 
         this.handlesubmitUpload = this.handlesubmitUpload.bind(this);
 
-        console.log("Manage Photos");
         var thisRef = this;
 
         this.sdk.GetUserPhotos(this.user.id)
@@ -32,7 +31,7 @@ export class ManagePhotos extends DatingAppComponent {
                     response.data.Result.Photos.forEach(function (item, index) {
                         thisRef.state.images.push({
                             ID: item.ID,
-                            src: thisRef.config.ApiBaseUrl + "/api/users/get_photo?id=" + item.ID,
+                            src: thisRef.config.ApiBaseUrl + "/api/users/get_photo?userid=" + thisRef.user.id + "&filename=" + item.FileName,
                             Rank: item.Rank
                         });
                     });

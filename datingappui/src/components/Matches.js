@@ -8,8 +8,8 @@ import MiniProfile from './Profile/MiniProfile';
 import DatingAppComponent from './DatingAppComponent';
 
 export class Matches extends DatingAppComponent {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             matches: []
@@ -18,7 +18,7 @@ export class Matches extends DatingAppComponent {
 
     componentDidMount() {
         var self = this;
-
+        console.log(this);
         this.sdk.GetUserMatches(this.user.id)
             .then((response) => {
                 var state = {};

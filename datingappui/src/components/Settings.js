@@ -4,15 +4,17 @@ import { Form, Button } from 'react-bootstrap'
 import Sdk from '../js/sdk';
 import Configuration from '../js/Configuration';
 import LoginManager from '../js/LoginManager';
+import DatingAppComponent from './DatingAppComponent';
 
-export class Settings extends Component {
+export class Settings extends DatingAppComponent {
     constructor(props) {
         super(props);
 
         this.state = {};
-        this.TryGetStateFromApi();
+        this.TryGetStateFromApi = this.TryGetStateFromApi.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.TryGetStateFromApi();
     }
 
     TryGetStateFromApi() {
@@ -41,6 +43,7 @@ export class Settings extends Component {
             this.sdk.SetSettings(this.user.id, this.state, function (response) {
                 console.log("From handle submit callback");
                 console.log(response);
+                window.location.reload();
             });
 
         } catch (error) {
