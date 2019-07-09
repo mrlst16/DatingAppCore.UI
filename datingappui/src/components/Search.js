@@ -9,6 +9,7 @@ import { stat } from 'fs';
 import MiniProfileForSearch from './Profile/MiniProfileForSearch';
 import DatingAppComponent from './DatingAppComponent';
 import Setting from '../components/Settings';
+import Filter from './Search/Filter';
 
 export class Search extends DatingAppComponent {
     constructor(props) {
@@ -66,14 +67,14 @@ export class Search extends DatingAppComponent {
                 <div>
                     <h3>Search</h3>
                     <div className="row">
-                        <div className="col-3">
-                            <Setting></Setting>
+                        <div className="col-5">
+                            <Filter></Filter>
                         </div>
-                        <div className="col-9">
+                        <div className="col-7">
                             {
                                 this.state.PotentialMatches.map((x, i) => {
                                     return <div className="row" key={x.id}>
-                                        <MiniProfileForSearch
+                                        <MiniProfileForSearch key={x.id}
                                             onSelectNo={(e) => this.recordSwipe(false, x, i)}
                                             onSelectYes={(e) => this.recordSwipe(true, x, i)}
                                             UserID={x.id}
