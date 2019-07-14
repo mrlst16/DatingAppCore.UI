@@ -37,11 +37,11 @@ export class Search extends DatingAppComponent {
     }
 
     componentDidMount() {
-        var thisRef = this;
+        var self = this;
 
         this.sdk.PotentialMatches(this.user.id)
             .then((response) => {
-                thisRef.setState({ PotentialMatches: response.data.result });
+                self.setState({ PotentialMatches: response.data.result });
             });
     }
 
@@ -57,6 +57,15 @@ export class Search extends DatingAppComponent {
             });
     }
 
+    search(searchParams) {
+        var self = this;
+        console.log(searchParams);
+        this.sdk.SearchUsers(this.user.id, searchParams)
+            .then((response) => {
+                self.setState({ PotentialMatches: response.data.result });
+            });
+    }
+
     render() {
         let page;
         if (!navigator.geolocation) {
@@ -68,7 +77,11 @@ export class Search extends DatingAppComponent {
                     <h3>Search</h3>
                     <div className="row">
                         <div className="col-5">
-                            <Filter></Filter>
+                            <Filter
+                                onSearchClick={(e) => {
+                                    this.search(e);
+                                }}
+                            ></Filter>
                         </div>
                         <div className="col-7">
                             {

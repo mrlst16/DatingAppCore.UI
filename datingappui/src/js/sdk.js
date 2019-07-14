@@ -128,4 +128,21 @@ export default function Sdk(config) {
             IsLike: isLike
         })
     }
+
+    this.SearchUsers = function (userid, searchParameters) {
+        var data = {
+            UserID: userid,
+            Filter : []
+        };
+
+        Object.keys(searchParameters).map((k,i)=>{
+            let kvp = {
+                Key: k,
+                Value: searchParameters[k]
+            };
+            data.Filter.push(kvp);
+        });
+
+        return this.Post("/api/matches/search_users", data);
+    }
 }

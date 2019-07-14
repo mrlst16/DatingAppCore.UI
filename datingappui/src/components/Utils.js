@@ -9,6 +9,16 @@ const Utils = function() {
     this.config = new Configuration();
     this.sdk = new Sdk(this.config);
     this.user = this.login.getUser();
+
+    this.filterObject = function(obj, predicate){
+        var result = {};
+        obj.map(obj, (k)=>{
+            if(obj[k] && predicate(obj[k])){
+                result[k] = obj[k];
+            }
+        });
+        return result;
+    }
 }
 
 export default Utils;
