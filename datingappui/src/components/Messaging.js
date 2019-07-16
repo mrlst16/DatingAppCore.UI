@@ -47,6 +47,7 @@ export class Messaging extends DatingAppComponent {
                 console.log(error);
             });
     }
+    
     render() {
 
         return (

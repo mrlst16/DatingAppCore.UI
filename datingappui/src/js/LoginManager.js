@@ -1,5 +1,6 @@
 import Sdk from './sdk'
 import Configuration from '../js/Configuration'
+import axios from 'axios'
 
 export default function LoginManager() {
 
@@ -38,8 +39,6 @@ export default function LoginManager() {
                         localStorage.setItem("external_id", response.id);
                         localStorage.setItem("idtype", "facebook");
                         var sdk = new Sdk(config);
-                        console.log("sdk");
-                        console.log(sdk);
 
                         sdk.Post("/api/users/login_or_signup", {
                             User: {
@@ -47,13 +46,9 @@ export default function LoginManager() {
                                 IdType: 1
                             }
                         }).then((res) => {
-                            console.log("then");
-                            console.log(res);
                             localStorage.setItem("user", JSON.stringify(res.data.result.user));
                             window.location.reload();
                         });
-
-                        // sdk.LoginOrSignupWithFacebook(response.id);
                     } catch (ex) {
                         console.log("An Exception was thrown while logging in via facebook");
                         console.log(ex);

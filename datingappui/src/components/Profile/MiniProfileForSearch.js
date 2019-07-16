@@ -18,8 +18,6 @@ export class MiniProfileForSearch extends DatingAppComponent {
             }
         };
 
-        this.config = new Configuration();
-        this.sdk = new Sdk(this.config);
     }
 
     componentDidMount() {
@@ -33,7 +31,8 @@ export class MiniProfileForSearch extends DatingAppComponent {
         )
             .then((response) => {
                 if (response.data.Sucess) {
-                    self.state.User = self.formatUser(response.data.Result);
+                    var user = self.formatUser(response.data.Result);
+                    self.state.User = user;
                     self.setState(self.state);
                 }
             })
@@ -41,13 +40,9 @@ export class MiniProfileForSearch extends DatingAppComponent {
                 console.log("From get Photos ERROR")
                 console.log(error);
             });
-        console.log(this.state);
-
     }
 
     formatUser(user) {
-        console.log("Formatting user");
-        console.log(user);
         if (user.Profile["sex"]) {
             user.Profile["sex"] = user.Profile["gender"] == 'f' ? 'female' : 'male'
         }
@@ -56,8 +51,6 @@ export class MiniProfileForSearch extends DatingAppComponent {
         }
         if (user.Profile["dogs"]) {
             var feelingsOnDogs = user.Profile["dogs"];
-            console.log("Feelings on dogs");
-            console.log(feelingsOnDogs);
             switch (feelingsOnDogs) {
                 case 't':
                     feelingsOnDogs = 'Love Them';
@@ -82,7 +75,10 @@ export class MiniProfileForSearch extends DatingAppComponent {
         if (this.state.User.Photos) {
             var src = this.config.ApiBaseUrl + "/api/users/get_photo?userid=" + this.state.User.Photos[0].UserID + "&filename=" + this.state.User.Photos[0].FileName
             img =
-                <img src={src} />
+                <img style={{
+                    maxHeight: 100
+                }
+                } src={src} />
         }
         return (
             <div>
@@ -94,7 +90,7 @@ export class MiniProfileForSearch extends DatingAppComponent {
                     <div className="container">
                         {
                             Object.keys(this.state.User.Profile).map((x, i) =>
-                                <div className="row">
+                                <div className="row" key={i}>
                                     <div className="col-2" key={i}>{x}</div>
                                     <div className="col-10"> {this.state.User.Profile[x]}</div>
                                 </div>

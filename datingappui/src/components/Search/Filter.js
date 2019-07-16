@@ -8,8 +8,35 @@ class Filter extends DatingAppComponent {
 
     constructor(props) {
         super(props);
-
         this.state = {};
+    }
+
+    componentDidMount() {
+        var self = this;
+        this.sdk.GetProfile(this.user.id)
+            .then((response => {
+                if (response.data.Sucess) {
+                    var state = self.state;
+                    state = response.data.Result.Settings;
+                    self.setState(state);
+                }
+            })).catch((error) => {
+                console.log("error");
+                console.log(error);
+            });
+    }
+
+    save(event) {
+        event.preventDefault();
+        console.log(this.state);
+        this.sdk.SetSettings(this.user.id, this.state)
+        .then((response) => {
+            console.log("From handle submit callback");
+            console.log(response);
+        }).catch((error) => {
+            console.log("Error setting user settings");
+            console.log(error);
+        });
     }
 
     setStateProp(key, value) {
@@ -71,9 +98,12 @@ class Filter extends DatingAppComponent {
                         let searchParams = this.getSearchParams();
                         this.props.onSearchClick(searchParams);
                     }} />
+                    <input type="button" value="Save" onClick={(e) => {
+                        this.save(e);
+                    }} />
                 </div>
             </div>
-        </div >;
+        </div>;
     }
 }
 

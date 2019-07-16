@@ -50,8 +50,8 @@ export default function Sdk(config) {
         return this.Post("/api/users/set_user_profile", { UserID: userid, Properties: profile }, successCallback);
     }
 
-    this.SetSettings = function (userid, settings, successCallback) {
-        return this.Post("/api/users/set_user_settings", { UserID: userid, Properties: settings }, successCallback);
+    this.SetSettings = function (userid, settings) {
+        return this.Post("/api/users/set_user_settings", { UserID: userid, Properties: settings });
     }
 
     this.UploadPhoto = function (formData, userid) {
@@ -82,7 +82,7 @@ export default function Sdk(config) {
 
     this.GetUserMatches = function (userid) {
         return this.Post("/api/matches/matches", {
-            UserID: this.user.id
+            UserID: userid
         });
     }
 
@@ -132,10 +132,10 @@ export default function Sdk(config) {
     this.SearchUsers = function (userid, searchParameters) {
         var data = {
             UserID: userid,
-            Filter : []
+            Filter: []
         };
 
-        Object.keys(searchParameters).map((k,i)=>{
+        Object.keys(searchParameters).map((k, i) => {
             let kvp = {
                 Key: k,
                 Value: searchParameters[k]

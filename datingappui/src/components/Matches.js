@@ -10,7 +10,7 @@ import DatingAppComponent from './DatingAppComponent';
 export class Matches extends DatingAppComponent {
     constructor(props) {
         super(props);
-
+        
         this.state = {
             matches: []
         };

@@ -14,9 +14,12 @@ import Filter from './Search/Filter';
 export class Search extends DatingAppComponent {
     constructor(props) {
         super(props);
-        this.state = { PotentialMatches: [] };
+        this.state = {
+            PotentialMatches: [],
+            Settings: {}
+        };
         var self = this;
-
+        this.myRef = React.createRef();
         new Promise((resolve) => {
             if (navigator.geolocation) {
                 return navigator.geolocation.getCurrentPosition(resolve);
@@ -41,8 +44,20 @@ export class Search extends DatingAppComponent {
 
         this.sdk.PotentialMatches(this.user.id)
             .then((response) => {
-                self.setState({ PotentialMatches: response.data.result });
+                console.log("response from get potential matches")
+                console.log(response);
+                if (response.data.sucess) {
+                    var state = self.state;
+                    state.PotentialMatches = response.data.result;
+                    self.setState(state);
+                }
+                else {
+                    console.log('ERROR Getting potential matches');
+                    console.log(response);
+                }
             });
+
+
     }
 
     recordSwipe(answer, user, index) {
@@ -59,7 +74,6 @@ export class Search extends DatingAppComponent {
 
     search(searchParams) {
         var self = this;
-        console.log(searchParams);
         this.sdk.SearchUsers(this.user.id, searchParams)
             .then((response) => {
                 self.setState({ PotentialMatches: response.data.result });
@@ -77,11 +91,21 @@ export class Search extends DatingAppComponent {
                     <h3>Search</h3>
                     <div className="row">
                         <div className="col-5">
-                            <Filter
-                                onSearchClick={(e) => {
-                                    this.search(e);
-                                }}
-                            ></Filter>
+                            <div className="row">
+
+                            </div>
+                            <div className="row">
+                                <div className="col-12">
+                                    <Filter
+                                        ref={this.myRef}
+                                        Settings={this.state.Settings}
+                                        onSearchClick={(e) => {
+                                            this.search(e);
+                                        }}
+                                    ></Filter>
+                                </div>
+                            </div>
+
                         </div>
                         <div className="col-7">
                             {
