@@ -1,6 +1,7 @@
 import Sdk from './sdk'
 import Configuration from '../js/Configuration'
 import axios from 'axios'
+import { debug } from 'util';
 
 export default function LoginManager() {
 
@@ -43,7 +44,8 @@ export default function LoginManager() {
                         sdk.Post("/api/users/login_or_signup", {
                             User: {
                                 ExternalID: response.id,
-                                IdType: 1
+                                IdType: 1,
+                                UserName: response.name
                             }
                         }).then((res) => {
                             localStorage.setItem("user", JSON.stringify(res.data.result.user));

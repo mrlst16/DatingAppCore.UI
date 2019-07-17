@@ -62,7 +62,7 @@ export class MiniProfile extends Component {
 
         return (
             <div>
-                <h3>{this.state.User.ID}</h3>
+                <h3>{this.state.User.UserName}</h3>
                 <div className="image_container">
                     <img src={this.state.images[0]} />
                 </div>

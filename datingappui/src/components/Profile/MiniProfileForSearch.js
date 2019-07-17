@@ -76,23 +76,27 @@ export class MiniProfileForSearch extends DatingAppComponent {
             var src = this.config.ApiBaseUrl + "/api/users/get_photo?userid=" + this.state.User.Photos[0].UserID + "&filename=" + this.state.User.Photos[0].FileName
             img =
                 <img style={{
-                    maxHeight: 100
+                    maxHeight: 150
                 }
                 } src={src} />
         }
         return (
-            <div>
-                <h3>{this.state.User.ID}</h3>
-                <div className="image_container">
+            <div style={{
+                width: "60%"
+            }}>
+                <div className="image_container row">
+                    {this.state.User.UserName}
+                </div>
+                <div className="image_container row">
                     {img}
                 </div>
-                <div>
+                <div className="row">
                     <div className="container">
                         {
                             Object.keys(this.state.User.Profile).map((x, i) =>
                                 <div className="row" key={i}>
-                                    <div className="col-2" key={i}>{x}</div>
-                                    <div className="col-10"> {this.state.User.Profile[x]}</div>
+                                    <div className="col-1" key={i}>{x}</div>
+                                    <div className="col-11"> {this.state.User.Profile[x]}</div>
                                 </div>
                             )
                         }
