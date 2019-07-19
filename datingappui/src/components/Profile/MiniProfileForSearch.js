@@ -43,6 +43,14 @@ export class MiniProfileForSearch extends DatingAppComponent {
     }
 
     formatUser(user) {
+
+        function calculateAge(birthday) { // birthday is a date
+            var birthdayDate = new Date(birthday);
+            var ageDifMs = Date.now() - birthdayDate.getTime();
+            var ageDate = new Date(ageDifMs); // miliseconds from epoch
+            return Math.abs(ageDate.getUTCFullYear() - 1970);
+          }
+
         if (user.Profile["sex"]) {
             user.Profile["sex"] = user.Profile["gender"] == 'f' ? 'female' : 'male'
         }
@@ -66,6 +74,9 @@ export class MiniProfileForSearch extends DatingAppComponent {
             }
             user.Profile["dogs"] = feelingsOnDogs;
         }
+        if (user.Birthday) {
+            user.Age = calculateAge(user.Birthday);
+        }
         return user;
     }
 
@@ -84,8 +95,11 @@ export class MiniProfileForSearch extends DatingAppComponent {
             <div style={{
                 width: "60%"
             }}>
-                <div className="image_container row">
+                <div className="username row">
                     {this.state.User.UserName}
+                </div>
+                <div className="row">
+                    {this.state.User.Age}
                 </div>
                 <div className="image_container row">
                     {img}

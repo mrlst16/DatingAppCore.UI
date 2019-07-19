@@ -12,8 +12,6 @@ export class MiniProfile extends Component {
         this.state = {
             images: []
         }
-
-        console.log("MiniProfile");
         this.props = props;
 
         this.state = {
