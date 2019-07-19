@@ -4,8 +4,6 @@ import axios from 'axios'
 import { debug } from 'util';
 
 export default function LoginManager() {
-
-
     this.logout = function () {
         localStorage.clear();
         window.User = null;
@@ -34,7 +32,7 @@ export default function LoginManager() {
         window.fbAsyncInit();
         window.FB.login(function (response) {
             if (response.authResponse) {
-                window.FB.api('/me', function (response) {
+                window.FB.api('/me?fields=id,name,birthday,gender', function (response) {
                     try {
                         var config = new Configuration();
                         localStorage.setItem("external_id", response.id);
@@ -45,7 +43,8 @@ export default function LoginManager() {
                             User: {
                                 ExternalID: response.id,
                                 IdType: 1,
-                                UserName: response.name
+                                UserName: response.name,
+                                Birthday: response.birthday
                             }
                         }).then((res) => {
                             localStorage.setItem("user", JSON.stringify(res.data.result.user));

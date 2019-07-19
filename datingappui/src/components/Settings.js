@@ -22,6 +22,7 @@ export class Settings extends DatingAppComponent {
         this.sdk.GetProfile(this.user.id)
             .then((response => {
                 if (response.data.Result) {
+
                     self.state = response.data.Result.Settings;
                     self.setState(self.state);
                 }
