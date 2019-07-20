@@ -25,27 +25,15 @@ export class Lab extends DatingAppComponent {
         const signalR = require("@aspnet/signalr");
 
         let connection = new signalR.HubConnectionBuilder()
-            // .withUrl("/chathub")
             .withUrl("https://localhost:44387/chatHub")
             .configureLogging(signalR.LogLevel.Information)
             .build();
-
-        console.log(signalR);
-        console.log(connection);
 
         connection.on("ReceiveMessage", (x) => {
             console.log("On ReceiveMessage");
             console.log(x);
         });
-
-        // connection.start()
-        //     .then(() => connection.invoke("RegisterConversation", "user1", "user2"))
-        //     .catch((error)=>{
-        //         console.log("connection start error");
-        //         console.log(error);
-        //     });
-
-
+        
         connection.start()
             .then(() => {
                 console.log("Connected");
@@ -66,8 +54,6 @@ export class Lab extends DatingAppComponent {
                 console.log(error);
             });
         }, millisecondsToWait);
-
-        
     }
 
     render() {
