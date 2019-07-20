@@ -99,7 +99,7 @@ export class MiniProfileForSearch extends DatingAppComponent {
                     {this.state.User.UserName}
                 </div>
                 <div className="row">
-                    {this.state.User.Age}
+                    {this.state.User.Age} Years Old
                 </div>
                 <div className="image_container row">
                     {img}

@@ -22,26 +22,52 @@ export class Lab extends DatingAppComponent {
     }
 
     componentDidMount = () => {
-        //const nick = window.prompt('Your name:', 'John');
-
-        //const hubConnection = new HubConnection('http://localhost:30005/chatHub');
         const signalR = require("@aspnet/signalr");
 
         let connection = new signalR.HubConnectionBuilder()
-            .withUrl("/chat")
+            // .withUrl("/chathub")
+            .withUrl("https://localhost:44387/chatHub")
+            .configureLogging(signalR.LogLevel.Information)
             .build();
+
         console.log(signalR);
         console.log(connection);
 
-        // const script = document.createElement("script");
-        // script.src = "/static/libs/your_script.js";
-        // script.async = true;
-        //script.onload = () => this.scriptLoaded();
+        connection.on("ReceiveMessage", (x) => {
+            console.log("On ReceiveMessage");
+            console.log(x);
+        });
 
-        // document.head.appendChild(script);
-        //this.setState({ hubConnection, nick });
+        // connection.start()
+        //     .then(() => connection.invoke("RegisterConversation", "user1", "user2"))
+        //     .catch((error)=>{
+        //         console.log("connection start error");
+        //         console.log(error);
+        //     });
 
 
+        connection.start()
+            .then(() => {
+                console.log("Connected");
+            })
+            .catch((error) => {
+                console.log("connection start error");
+                console.log(error);
+            });
+
+        var millisecondsToWait = 2000;
+        setTimeout(function () {
+            // Whatever you want to do after the wait
+            connection.invoke("RegisterConversation", "user1", "user2").then((response) => {
+                console.log("RegisterConversation.Then");
+                console.log(response);
+            }).catch((error) => {
+                console.log("Register Error");
+                console.log(error);
+            });
+        }, millisecondsToWait);
+
+        
     }
 
     render() {
