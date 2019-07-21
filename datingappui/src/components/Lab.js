@@ -17,6 +17,7 @@ export class Lab extends DatingAppComponent {
         this.registerConversation = this.registerConversation.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.addMessageToDisplay = this.addMessageToDisplay.bind(this);
+        this.unRegisterConversation = this.unRegisterConversation.bind(this);
     }
 
     componentDidMount = () => {
@@ -71,6 +72,18 @@ export class Lab extends DatingAppComponent {
                     console.log("RegisterConversation Success");
                 }).catch((error) => {
                     console.log("RegisterConversation Error");
+                    console.log(error);
+                });
+        }
+    }
+
+    unRegisterConversation() {
+        if (this.state.from && this.state.to) {
+            this.connection.invoke("UnRegisterConversation", this.state.from, this.state.to)
+                .then(() => {
+                    console.log("UnRegisterConversation Success");
+                }).catch((error) => {
+                    console.log("UnRegisterConversation Error");
                     console.log(error);
                 });
         }
@@ -137,7 +150,8 @@ export class Lab extends DatingAppComponent {
                     </div>
                     <div className="row">
                         <div className="col-6">
-                            <input type="button" value="Register" onClick={this.registerConversation}></input>
+                        <input type="button" value="Register" onClick={this.registerConversation}></input>
+                            <input type="button" value="UnRegister" onClick={this.unRegisterConversation}></input>
                         </div>
                         <div className="col-6">
                             <input type="button" value="Send" onClick={this.sendMessage}></input>
