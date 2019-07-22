@@ -15,5 +15,10 @@ export class DatingAppComponent extends Component {
         this.user = this.login.getUser();
     }
     
+    setStateProperty(key, value) {
+        let state = this.state;
+        state[key] = value;
+        this.setState(state);
+    }
 }
 export default DatingAppComponent;

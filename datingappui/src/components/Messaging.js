@@ -16,21 +16,11 @@ export class Messaging extends DatingAppComponent {
         const { userid } = this.props.match.params;
         this.toUserId = userid;
 
-    }
-
-    sendMessage(e) {
-        e.preventDefault();
-        var message = document.getElementById("message").value;
-        this.sdk.SendMessage(this.user.id, this.toUserId, message)
-            .then((response) => {
-                console.log("response from send");
-                console.log(response);
-
-            })
-            .catch((error) => {
-                console.log("From send ERROR")
-                console.log(error);
-            });
+        this.connection = null;
+        this.registerConversation = this.registerConversation.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
+        this.addMessageToDisplay = this.addMessageToDisplay.bind(this);
+        this.unRegisterConversation = this.unRegisterConversation.bind(this);
     }
 
     componentDidMount() {
@@ -46,21 +36,105 @@ export class Messaging extends DatingAppComponent {
                 console.log("From get Photos ERROR")
                 console.log(error);
             });
-    }
+
+            const signalR = require("@aspnet/signalr");
+
+            this.connection = new signalR.HubConnectionBuilder()
+                .withUrl("https://localhost:44387/chatHub")
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
     
+            this.connection.on("ReceiveMessage", (from, to, message) => {
+                console.log("On ReceiveMessage");
+                console.log("from: " + from + "; to: " + to + "; message: " + message);
+                // this.addMessageToDisplay("from: " + from + "; to: " + to + "; message: " + message)
+                var state = self.state;
+                state.Messages.push({
+                    id: "some id",
+                    message: message
+                });
+                self.setState(state);
+            });
+
+            this.connection.on("RegisterComplete", (user, message) => {
+                console.log("On RegisterComplete");
+                console.log("user");
+                console.log(user);
+                console.log("message");
+                console.log(message);
+            });
+    
+            this.connection.start()
+                .then(() => {
+                    console.log("Connected");
+                    self.registerConversation();
+                })
+                .catch((error) => {
+                    console.log("connection start error");
+                    console.log(error);
+                });
+    }
+
+
+    addMessageToDisplay(message) {
+        var ul = document.getElementById('messages');
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(message));
+        ul.appendChild(li);
+    }
+
+    registerConversation() {
+        if (this.user.id && this.toUserId) {
+            this.connection.invoke("RegisterConversation", this.user.id, this.toUserId)
+                .then(() => {
+                    console.log("RegisterConversation Success");
+                }).catch((error) => {
+                    console.log("RegisterConversation Error");
+                    console.log(error);
+                });
+        }
+    }
+
+    unRegisterConversation() {
+        if (this.user.id && this.toUserId) {
+            this.connection.invoke("UnRegisterConversation", this.user.id, this.toUserId)
+                .then(() => {
+                    console.log("UnRegisterConversation Success");
+                }).catch((error) => {
+                    console.log("UnRegisterConversation Error");
+                    console.log(error);
+                });
+        }
+    }
+
+    sendMessage() {
+        console.log("sending message");
+        console.log(this.state);
+        var message = document.getElementById("message").value;
+        if (this.user.id && this.toUserId && message) {
+            this.connection.invoke("SendMessage", this.user.id, this.toUserId, message)
+                .then((response) => {
+                    console.log("SendMessage Success");
+                }).catch((error) => {
+                    console.log("SendMessage Error");
+                    console.log(error);
+                });
+        }
+    }
+
     render() {
 
         return (
             <div>
                 <h3>Messaging to User {this.toUserId}</h3>
-                <ul>{this.state.Messages.map((x, i) =>
+                <ul id="messages">{this.state.Messages.map((x, i) =>
                     <li key={x.id}>{x.message}</li>
                 )}
                 </ul>
 
                 <textarea id="message"></textarea>
                 <br />
-                <input type="button" value="Send" onClick={(e) => this.sendMessage(e)}></input>
+                <input type="button" value="Send" onClick={() => this.sendMessage()}></input>
             </div>
         );
     };
