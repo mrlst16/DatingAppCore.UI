@@ -2,8 +2,6 @@ import axios from 'axios'
 
 export default function Sdk(config) {
 
-    var config = config;
-
     this.Get = function (url) {
         return axios({
             method: 'get',

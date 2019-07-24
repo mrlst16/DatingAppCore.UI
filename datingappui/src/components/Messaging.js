@@ -56,12 +56,9 @@ export class Messaging extends DatingAppComponent {
                 self.setState(state);
             });
 
-            this.connection.on("RegisterComplete", (user, message) => {
+            this.connection.on("RegisterComplete", (conversationid) => {
                 console.log("On RegisterComplete");
-                console.log("user");
-                console.log(user);
-                console.log("message");
-                console.log(message);
+                console.log(conversationid);                
             });
     
             this.connection.start()
