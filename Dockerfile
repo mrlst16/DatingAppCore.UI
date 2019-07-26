@@ -8,10 +8,15 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 ## install and cache app dependencies
-#COPY package.json /app/package.json
+COPY package.json /app/package.json
 COPY . /app
-RUN npm install --silent
-RUN npm install react-scripts -g --silent
+
+RUN echo "RUNnpminstall"
+
+RUN npm install 
+
+RUN echo "RUNnpminstallreact-scripts-g"
+RUN npm install react-scripts -g
 
 # start app
 CMD ["npm", "start"]
