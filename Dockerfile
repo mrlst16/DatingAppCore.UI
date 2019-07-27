@@ -18,5 +18,7 @@ RUN npm install
 RUN echo "RUNnpminstallreact-scripts-g"
 RUN npm install react-scripts -g
 
+EXPOSE 80:8080
+
 # start app
 CMD ["npm", "start"]
