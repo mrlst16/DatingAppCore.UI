@@ -1,22 +1,12 @@
-# base image
-FROM node
-
-# set working directory
+# stage: 1
+FROM node:8 as react-build
 WORKDIR /app
+COPY . ./
+RUN yarn
+RUN yarn build
 
-EXPOSE 443
+# stage: 2 — the production environment
+FROM nginx:alpine
+COPY --from=react-build /app/build /usr/share/nginx/html
 EXPOSE 80
-EXPOSE 3000
-
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-
-## install and cache app dependencies
-COPY package.json /app/package.json
-COPY . /app
-
-RUN npm install 
-RUN npm install react-scripts -g
-
-# start app
-CMD ["npm", "start"]
+CMD ["usr/sbin/nginx", "-g", "daemon off;"]
