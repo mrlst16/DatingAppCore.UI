@@ -6,6 +6,7 @@ WORKDIR /app
 
 EXPOSE 443
 EXPOSE 80
+EXPOSE 3000
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
