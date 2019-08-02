@@ -29,6 +29,7 @@ class App extends DatingAppComponent {
         <div id="body" style={{
           display: "block"
         }}>
+          <h1>Jessie, I Love you!!!!</h1>
           <Route path="/"
             render={() => { return <Error message="You don't have to pay me, but you do have to log in" /> }}
           />
