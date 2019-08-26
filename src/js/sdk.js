@@ -10,7 +10,9 @@ export default function Sdk(config) {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': 'true',
                 'ClientID': config.ClientID,
-                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
+                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword),
+                'Cache-Control': 'no-cache',
+                'accept-encoding': 'gzip, deflate'
             }
         });
     }
@@ -24,7 +26,10 @@ export default function Sdk(config) {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': 'true',
                 'ClientID': config.ClientID,
-                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword)
+                'Authorization': 'Basic ' + btoa(config.ClientUserName + ":" + config.ClientPassword),
+                'Accept': '*/*',
+                'Cache-Control': 'no-cache',
+                'accept-encoding': 'gzip, deflate'
             },
         });
     }
